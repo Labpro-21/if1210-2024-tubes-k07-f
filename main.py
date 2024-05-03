@@ -44,14 +44,13 @@ class color:
 # REGISTER
 def read_csv(file_path):
     data = []
-    row = []
-    field = ""
-    in_quotes = False
-
     with open(file_path, 'r') as file:
+        row = []
+        field = ""
+        in_quotes = False
+
         for char in file.read():
             if char == ';' and not in_quotes:
-                char = ','
                 row.append(field)
                 field = ""
             elif char == '"' and not in_quotes:
@@ -66,11 +65,14 @@ def read_csv(file_path):
             else:
                 field += char
 
-    if field:
-        row.append(field)
-        data.append(row)
+        if field:
+            row.append(field)
+            data.append(row)
 
     return data
+
+def get_current_directory():
+    return os.path.dirname(os.path.abspath(__file__))
 
 def isUsernameValid(username):
     valid = True
@@ -202,14 +204,14 @@ def Help(alreadyLogin, currentUser):
         print("Kamu belum login sebagai role apapun. Silahkan login terlebih dahulu.")
         print("   1. Login: Masuk ke dalam akun yang sudah terdaftar")
         print("   2. Register: Membuat akun baru")
-    elif alreadyLogin and currentUser[2] == 'agent':
+    elif alreadyLogin and currentUser[3] == 'agent':
         print(
-            f"Halo Agent {currentUser[0]}. Kamu memanggil command HELP. Kamu memilih jalan yang benar, semoga kamu tidak sesat kemudian.")
+            f"Halo Agent {currentUser[1]}. Kamu memanggil command HELP. Kamu memilih jalan yang benar, semoga kamu tidak sesat kemudian.")
         print("Berikut adalah hal-hal yang dapat kamu lakukan sekarang:")
         print("   1. Logout: Keluar dari akun yang sedang digunakan")
         print("   2. Monster: Melihat owca-dex yang dimiliki oleh Agent")
         print("   3. Tambah lagi ntar")
-    elif alreadyLogin and currentUser[2] == 'admin':
+    elif alreadyLogin and currentUser[3] == 'admin':
         print("Selamat datang, Admin. Berikut adalah hal-hal yang dapat kamu lakukan:")
         print("   1. Logout: Keluar dari akun yang sedang digunakan")
         print("   2. Shop: Melakukan manajemen pada SHOP sebagai tempat jual beli peralatan Agent")
@@ -227,7 +229,6 @@ def Inventory(currentUser, mInv, iInv, mons):
     mTemp = []
     iTemp = []
 
-
     for i in range(len(mInv)):
         if mInv[i][0] == str(currentUser[0]):
             print(
@@ -244,39 +245,48 @@ def Inventory(currentUser, mInv, iInv, mons):
             invCount += 1
             potInfo = [invCount, iInv[i][1], iInv[i][2]]
             iTemp.append(potInfo)
-
+        
+    if len(mTemp) == 0 and len(iTemp) == 0:
+        inventoryBool = False
+    else:
+        inventoryBool = True
     print()
-    while True:
-        pilihanInv = input(">>> ")
-        if pilihanInv.upper() != "KELUAR":
-            if int(pilihanInv) <= int(len(mTemp)):
-                for i in range(len(mTemp)):
-                    if int(pilihanInv) == mTemp[i][0]:
-                        print("Monster")
-                        print(f"Name      : {mTemp[i][1]}")
-                        print(f"ATK Power : {mTemp[i][2]}")
-                        print(f"Def Power : {mTemp[i][3]}")
-                        print(f"HP        : {mTemp[i][4]}")
-                        print(f"Level     : {mTemp[i][5]}")
-                        print()
-                        break
-            elif int(pilihanInv) > int(len(mTemp)):
-                for i in range(len(iTemp)):
-                    if int(pilihanInv) == iTemp[i][0]:
-                        print("Potion")
-                        print(f"Type      : {iTemp[i][1]}")
-                        print(f"Quantity  : {iTemp[i][2]}")
-                        print()
-                        break
-        elif pilihanInv.upper() == "KELUAR":
-            print()
-            break
-        else:
-            if invCount == 1:
-                print("Pilihan hanyalah 1 dan 'KELUAR'")
-            else:
-                print(f"Pilihan hanyalah 1-{invCount} dan 'KELUAR'")
-            print()
+
+    if inventoryBool:
+        while True:
+            print ("Masukkan pilihan sesuai angka diatas atau 'KELUAR'")
+            pilihanInv = input(">> ")
+            if pilihanInv == "":
+                pass
+            elif pilihanInv.upper() != "KELUAR":
+                if invCount == 1 and pilihanInv > 1:
+                    print ("Pilihan hanyalah 1 dan 'KELUAR'")
+                    print ()
+                elif int(pilihanInv) > invCount:
+                    print (f"Pilihan hanyalah 1-{invCount} dan 'KELUAR'")
+                    print()
+                elif int(pilihanInv) <= int(len(mTemp)):
+                    for i in range(len(mTemp)):
+                        if int(pilihanInv) == mTemp[i][0]:
+                            print("Monster")
+                            print(f"Name      : {mTemp[i][1]}")
+                            print(f"ATK Power : {mTemp[i][2]}")
+                            print(f"Def Power : {mTemp[i][3]}")
+                            print(f"HP        : {mTemp[i][4]}")
+                            print(f"Level     : {mTemp[i][5]}")
+                            print()
+                            break
+                elif int(pilihanInv) > int(len(mTemp)):
+                    for i in range(len(iTemp)):
+                        if int(pilihanInv) == iTemp[i][0]:
+                            print("Potion")
+                            print(f"Type      : {iTemp[i][1]}")
+                            print(f"Quantity  : {iTemp[i][2]}")
+                            print()
+                            break
+            elif pilihanInv.upper() == "KELUAR":
+                print()
+                break
 
     
 
@@ -308,10 +318,33 @@ def Inventory(currentUser, mInv, iInv, mons):
 
 
 # VARIABEL (KAMUS) ----------------------------------------------------------------------------------
-userpas = read_csv('user.csv')
-mInv = read_csv('monster_inventory.csv')
-iInv = read_csv('item_inventory.csv')
-mons = read_csv('monster.csv')
+tempFilepath = get_current_directory()
+charFilepath = [char for char in tempFilepath]
+newcharFilepath = []
+
+if charFilepath[-1] == "c" and charFilepath[-2] == "r" and charFilepath[-3] == "s" and charFilepath[-4] == "\\":
+    for i in range(len(charFilepath)-4):
+        if ord(charFilepath[i]) != 92:
+            newcharFilepath.append(charFilepath[i])
+        else:
+            newcharFilepath.append("/")
+else:
+    for i in (charFilepath):
+        if ord(i) != 92:
+            newcharFilepath.append(i)
+        else:
+            newcharFilepath.append("/")
+
+filepath = ("".join(map(str, newcharFilepath)))
+file_path = filepath+"/data/user.csv"
+mInv_path = filepath+"/data/monster_inventory.csv"
+iInv_path = filepath+"/data/item_inventory.csv"
+mons_path = filepath+"/data/monster.csv"
+
+userpas = read_csv(file_path)
+mInv = read_csv(mInv_path)
+iInv = read_csv(iInv_path)
+mons = read_csv(mons_path)
 
 cnt = len(userpas)
 monsterAwal = ["Pikachow", "Bulbu", "Zeze", "Zuko", "Chacha"]
@@ -337,6 +370,7 @@ while True:
         if alreadyLogin:
             print("Login gagal!")
             print(f"Anda telah login dengan username {currentUser[1]}, silahkan lakukan “LOGOUT” sebelum melakukan login kembali.")
+            print()
         else:
             loginUsername = input("Masukkan username : ")
             loginPassword = input("Masukkan password : ")
@@ -358,16 +392,17 @@ while True:
             Login(loginBool, wrongUsername,wrongPassword, alreadyLogin, userpas)
             alreadyLogin = isLoginValid(loginUsername, loginPassword, userList, passList)
 
-            for i in range(len(userList)):
-                for j in range(len(userList)):
-                    if userList[i] == loginUsername:
-                        currentUser.append(int(userpas[i][0])) # userid
-                        currentUser.append(userpas[i][1]) # username
-                        currentUser.append(userpas[i][2]) # password
-                        currentUser.append(userpas[i][3]) # role
-                        currentUser.append(int(userpas[i][4])) # oc
-                        break
-            print (currentUser) #buat ngetes
+            if loginBool:
+                for i in range(len(userList)):
+                    for j in range(len(userList)):
+                        if userList[i] == loginUsername:
+                            currentUser.append(int(userpas[i][0])) # userid
+                            currentUser.append(userpas[i][1]) # username
+                            currentUser.append(userpas[i][2]) # password
+                            currentUser.append(userpas[i][3]) # role
+                            currentUser.append(int(userpas[i][4])) # oc
+                            break
+            # print (currentUser) #buat ngetes
 
     if pilihan.upper() == "LOGOUT": #LOGOUT -----------------------------------------------------------------------
         if alreadyLogin:
