@@ -1,6 +1,5 @@
 import os
 
-
 def read_csv_to_list(file_path):
     data = []
     with open(file_path, 'r') as file:
@@ -37,13 +36,22 @@ def get_current_directory():
 tempFilepath = get_current_directory()
 charFilepath = [char for char in tempFilepath]
 newcharFilepath = []
-for i in (charFilepath):
-    if ord(i) != 92:
-        newcharFilepath.append(i)
-    else:
-        newcharFilepath.append("/")
+
+if charFilepath[-1] == "c" and charFilepath[-2] == "r" and charFilepath[-3] == "s" and charFilepath[-4] == "\\":
+    for i in range(len(charFilepath)-4):
+        if ord(charFilepath[i]) != 92:
+            newcharFilepath.append(charFilepath[i])
+        else:
+            newcharFilepath.append("/")
+else:
+    for i in (charFilepath):
+        if ord(i) != 92:
+            newcharFilepath.append(i)
+        else:
+            newcharFilepath.append("/")
+
 filepath = ("".join(map(str, newcharFilepath)))
 file_path = filepath+"/data/user.csv"
 
 csv_data = read_csv_to_list(file_path)
-print (csv_data)
+print(csv_data)

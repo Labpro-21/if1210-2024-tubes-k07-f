@@ -1,13 +1,14 @@
+import os
+
 def read_csv(file_path):
     data = []
-    row = []
-    field = ""
-    in_quotes = False
-
     with open(file_path, 'r') as file:
+        row = []
+        field = ""
+        in_quotes = False
+
         for char in file.read():
             if char == ';' and not in_quotes:
-                char = ','
                 row.append(field)
                 field = ""
             elif char == '"' and not in_quotes:
@@ -22,17 +23,46 @@ def read_csv(file_path):
             else:
                 field += char
 
-    if field:
-        row.append(field)
-        data.append(row)
+        if field:
+            row.append(field)
+            data.append(row)
 
     return data
 
 
-mInv = read_csv('monster_inventory.csv')
-iInv = read_csv('item_inventory.csv')
-mons = read_csv('monster.csv')
-currentUser = [3, 'Agen_P', 'platypus123', 'agent', 0] #cuma sampel, nanti diambil dari fungsi login
+def get_current_directory():
+    return os.path.dirname(os.path.abspath(__file__))
+
+tempFilepath = get_current_directory()
+charFilepath = [char for char in tempFilepath]
+newcharFilepath = []
+tempFilepath = get_current_directory()
+charFilepath = [char for char in tempFilepath]
+newcharFilepath = []
+
+if charFilepath[-1] == "c" and charFilepath[-2] == "r" and charFilepath[-3] == "s" and charFilepath[-4] == "\\":
+    for i in range(len(charFilepath)-4):
+        if ord(charFilepath[i]) != 92:
+            newcharFilepath.append(charFilepath[i])
+        else:
+            newcharFilepath.append("/")
+else:
+    for i in (charFilepath):
+        if ord(i) != 92:
+            newcharFilepath.append(i)
+        else:
+            newcharFilepath.append("/")
+
+filepath = ("".join(map(str, newcharFilepath)))
+mInv_path = filepath+"/data/monster_inventory.csv"
+iInv_path = filepath+"/data/item_inventory.csv"
+mons_path = filepath+"/data/monster.csv"
+
+mInv = read_csv(mInv_path)
+iInv = read_csv(iInv_path)
+mons = read_csv(mons_path)
+
+currentUser = [3, 'Agen_P', 'platypus123', 'agent', 0] # cuma sampel, nanti diambil dari fungsi login
 
 def Inventory(currentUser, mInv, iInv, mons):
   print(f"============ INVENTORY LIST (User ID: {currentUser[0]}) ============")
