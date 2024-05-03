@@ -43,7 +43,7 @@ for i in (charFilepath):
     else:
         newcharFilepath.append("/")
 filepath = ("".join(map(str, newcharFilepath)))
-file_path = filepath+"/data/user.csv"
+file_path = filepath+"/data/user.csv" # ubah sesuai nama csv file yang mau di read
 
 csv_data = read_csv_to_list(file_path)
 print (csv_data)
