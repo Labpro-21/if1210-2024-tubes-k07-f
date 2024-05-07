@@ -1,65 +1,12 @@
 import os
+from src.csv import *
 
 monsterAwal = ["Pikachow", "Bulbu", "Zeze", "Zuko", "Chacha"]
 validUsername = True
 notExistUsername = True
 
-
-def read_csv(file_path):
-    data = []
-    with open(file_path, 'r') as file:
-        row = []
-        field = ""
-        in_quotes = False
-
-        for char in file.read():
-            if char == ';' and not in_quotes:
-                row.append(field)
-                field = ""
-            elif char == '"' and not in_quotes:
-                in_quotes = True
-            elif char == '"' and in_quotes:
-                in_quotes = False
-            elif char == '\n' and not in_quotes:
-                row.append(field)
-                data.append(row)
-                row = []
-                field = ""
-            else:
-                field += char
-
-        if field:
-            row.append(field)
-            data.append(row)
-
-    return data
-
-
-def get_current_directory():
-    return os.path.dirname(os.path.abspath(__file__))
-
-
-tempFilepath = get_current_directory()
-charFilepath = [char for char in tempFilepath]
-newcharFilepath = []
-
-if charFilepath[-1] == "c" and charFilepath[-2] == "r" and charFilepath[-3] == "s" and charFilepath[-4] == "\\":
-    for i in range(len(charFilepath)-4):
-        if ord(charFilepath[i]) != 92:
-            newcharFilepath.append(charFilepath[i])
-        else:
-            newcharFilepath.append("/")
-else:
-    for i in (charFilepath):
-        if ord(i) != 92:
-            newcharFilepath.append(i)
-        else:
-            newcharFilepath.append("/")
-
-filepath = ("".join(map(str, newcharFilepath)))
-file_path = filepath+"/data/user.csv"
-
-user_pas = read_csv(file_path)
+userpas = read_csv(user_filepath())
+cnt = len(userpas)
 
 
 def isUsernameValid(username):
@@ -72,23 +19,21 @@ def isUsernameValid(username):
     return (valid)
 
 
-def isUsernameExist(username, user_pas):
+def isUsernameExist(username, userpas):
     valid = True
     tempList = []
-    for i in range(len(user_pas)):
-        for j in range(len(user_pas)):
+    for i in range(len(userpas)):
+        for j in range(len(userpas)):
             if j == 1:
-                tempList.append(user_pas[i][j])
-    print(tempList)
+                tempList.append(userpas[i][j])
     for i in tempList:
         if username == i:
             valid = False
             break
-    print(valid)
     return (valid)
 
 
-def Register():
+def REGISTER(cnt):
     role = 'agent'
     oc = 0
 
@@ -104,22 +49,27 @@ def Register():
         print()
         validUsername = isUsernameValid(username)
 
-    notExistUsername = isUsernameExist(username, user_pas)
+    notExistUsername = isUsernameExist(username, userpas)
     while notExistUsername == False:
         print(
             f"Username {username} sudah terpakai, silahkan gunakan username lain!")
         username = input("Masukkan username: ")
         password = input("Masukkan password: ")
         print()
-        notExistUsername = isUsernameExist(username, user_pas)
+        notExistUsername = isUsernameExist(username, userpas)
 
     # ini temporary, ntar pas save lgsg ngewrite ke csv
-    cnt = len(user_pas)
+    cnt = len(userpas)
     tempUserpasList = []
     tempUserpas = str(cnt)+";"+username+";"+password+";"+role+";"+str(oc)
-    tempUserpasList.append(tempUserpas)
+    tempUserpasList.append(cnt)
+    tempUserpasList.append(username)
+    tempUserpasList.append(password)
+    tempUserpasList.append(role)
+    tempUserpasList.append(oc)
+    userpas.append(tempUserpasList)
 
-    # Buat save nanti
+    # Buat save nanti ?
     # f = open('user.csv', 'a')
     # for i in tempUserpasList:
     #   f.write("\n"+i)
@@ -138,6 +88,8 @@ def Register():
     print(
         f"Selamat datang Agent {username}. Mari kita mengalahkan Dr. Asep Spakbor dengan {monster}!")
 
-    print(tempUserpasList)
+    print(userpas)
+    cnt += 1
 
-Register()
+
+# REGISTER(cnt)
