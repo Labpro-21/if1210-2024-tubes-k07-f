@@ -6,6 +6,7 @@ validUsername = True
 notExistUsername = True
 
 userpas = read_csv(user_filepath())
+mInv = read_csv(monster_inventory_filepath())
 cnt = len(userpas)
 
 
@@ -88,7 +89,14 @@ def REGISTER(cnt):
     print(
         f"Selamat datang Agent {username}. Mari kita mengalahkan Dr. Asep Spakbor dengan {monster}!")
 
+    tempMInv = []
+    tempMInv.append(int(cnt))
+    tempMInv.append(int(angkaMonster))
+    tempMInv.append(1)
+    mInv.append(tempMInv)
+
     print(userpas)
+    print(mInv)
     cnt += 1
 
 
