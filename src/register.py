@@ -94,10 +94,8 @@ def REGISTER(cnt):
     tempMInv.append(int(angkaMonster))
     tempMInv.append(1)
     mInv.append(tempMInv)
-
-    print(userpas)
-    print(mInv)
     cnt += 1
 
+    return(userpas)
 
 # REGISTER(cnt)
