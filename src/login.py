@@ -31,7 +31,6 @@ def isUsernameExist(wrongPassword, loginBool):
 
 
 def LOGIN(loginBool, wrongUsername, wrongPassword, userpas):
-    print (userpas)
     if currentUser != []:
         print("Login gagal!")
         print(
