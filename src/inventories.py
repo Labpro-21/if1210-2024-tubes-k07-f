@@ -1,31 +1,34 @@
-from src.login import *
+from src.login import *  # MASIH PERLU DI FIX INVENTORY
 import os
 
 from src.csv import *
+from src.register import *
+
 mons = read_csv(monster_filepath())
-mInv = read_csv(monster_inventory_filepath())
 iInv = read_csv(item_inventory_filepath())
 
 
-def mInvList():
+def mInvList(invCount, currentUser, mInv, mons, mTemp):
     for i in range(len(mInv)):
-        if mInv[i][0] == str(currentUser[0]):
-            print(
-                f"{invCount+1}. Monster       (Name: {mons[i][1]}, Lvl: {mInv[i][2]}, HP: {mons[i][4]})")
-            invCount += 1
-            stats = [invCount, mons[i][1], mons[i][2],
-                     mons[i][3], mons[i][4], mInv[i][2]]
-            mTemp.append(stats)
+        for j in range(len(mons)):
+            if str(mInv[i][0]) == str(currentUser[0]):
+                if str(mInv[i][1]) == str(mons[j][0]):
+                    print(
+                        f"{invCount+1}. Monster       (Name: {mons[j][1]}, Lvl: {mInv[j][2]}, HP: {mons[j][4]})")
+                    invCount += 1
+                    stats = [invCount, mons[j][1], int(mons[j][2]),
+                             int(mons[j][3]), int(mons[j][4]), int(mInv[i][2])]
+                    mTemp.append(stats)
     return mTemp
 
 
-def iInvList():
+def iInvList(invCount, currentUser, iInv, mons, iTemp):
     for i in range(len(iInv)):
-        if iInv[i][0] == str(currentUser[0]):
+        if str(iInv[i][0]) == str(currentUser[0]):
             print(
                 f"{invCount+1}. Potion        (Type: {iInv[i][1]}, Qty: {iInv[i][2]})")
             invCount += 1
-            potInfo = [invCount, iInv[i][1], iInv[i][2]]
+            potInfo = [invCount, iInv[i][1], int(iInv[i][2])]
             iTemp.append(potInfo)
     return iTemp
 
@@ -38,22 +41,10 @@ def INVENTORY(currentUser, mInv, iInv, mons):
     mTemp = []
     iTemp = []
 
-    for i in range(len(mInv)):
-        if mInv[i][0] == str(currentUser[0]):
-            print(
-                f"{invCount+1}. Monster       (Name: {mons[i][1]}, Lvl: {mInv[i][2]}, HP: {mons[i][4]})")
-            invCount += 1
-            stats = [invCount, mons[i][1], mons[i][2],
-                     mons[i][3], mons[i][4], mInv[i][2]]
-            mTemp.append(stats)
-
-    for i in range(len(iInv)):
-        if iInv[i][0] == str(currentUser[0]):
-            print(
-                f"{invCount+1}. Potion        (Type: {iInv[i][1]}, Qty: {iInv[i][2]})")
-            invCount += 1
-            potInfo = [invCount, iInv[i][1], iInv[i][2]]
-            iTemp.append(potInfo)
+    mInvList(invCount, currentUser, mInv, mons, mTemp)
+    invCount += len(mTemp)
+    iInvList(invCount, currentUser, iInv, mons, iTemp)
+    invCount += len(iTemp)
 
     if len(mTemp) == 0 and len(iTemp) == 0:
         inventoryBool = False
