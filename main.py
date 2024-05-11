@@ -12,6 +12,9 @@ from src.login import *
 from src.logout import *
 from src.help import *
 from src.inventories import *
+from src.shopcurrency import *
+from src.battle import *
+from src.rng import *
 
 print("SELAMAT DATANG PADA PROGRAM YANG SEDANG DALAM PERCOBAAN INI!!!")
 while True:
@@ -19,13 +22,32 @@ while True:
     if pilihan.upper() == "REGISTER":
         REGISTER(cnt)
     if pilihan.upper() == "LOGIN":
-        LOGIN(loginBool, wrongUsername, wrongPassword, userpas)
+        login = LOGIN(loginBool, wrongUsername, wrongPassword, userpas)
     if pilihan.upper() == "LOGOUT":
         LOGOUT(currentUser)
     if pilihan.upper() == "HELP":
         HELP(currentUser)
     if pilihan.upper() == "INVENTORY":
-        INVENTORY(currentUser, mInv, iInv, mons)
+        if login:
+            INVENTORY(currentUser, mInv, iInv, mons)
+        else:
+            print("Anda belum login. Silahkan login terlebih dahulu..")
+            print()
+    if pilihan.upper() == "BATTLE":
+        if login:
+            BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel)
+        else:
+            print("Anda belum login. Silahkan login terlebih dahulu..")
+            print()
+    if pilihan.upper() == "SHOP":
+        if login:
+            if currentUser[3] == "admin":
+                SHOP(currentUser, mShop, iShop, mons)
+            if currentUser[3] == "agent":
+                SHOP(currentUser, mShop, iShop, mons)
+        else:
+            print("Anda belum login. Silahkan login terlebih dahulu..")
+            print()
     if pilihan.upper() == "EXIT":
         break
 
