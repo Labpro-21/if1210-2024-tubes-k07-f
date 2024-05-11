@@ -1,33 +1,32 @@
 import os
 
-from csv import *
-from potion import *
-from monster import *
-from rng import *
-
-currentUser = [5, 'Kenny_agen_rahasia', 'kribogeming55',
-               'agent', 6699]  # sementara aja aslinya ambil dari login
-rngLevel = rngLevel(LCG)
-mInv = read_csv(monster_inventory_filepath())
-mons = read_csv(monster_filepath())
-iInv = read_csv(item_inventory_filepath())
+from src.csv import *
+from src.potion import *
+from src.monster import *
+from src.rng import *
+from src.login import *
 
 
 def chooseMons(userMons):
     while True:
-        choice = int(input("Pilih monster untuk bertarung: "))
-        print()
-        monsNum = len(userMons)
-        if choice > monsNum:
-            print("Pilihan nomor tidak tersedia!")
+        try:
+            choice = (input("Pilih monster untuk bertarung: "))
+            choice = int(choice)
             print()
-        else:
-            for i in range(len(userMons)):
-                if choice == i+1:
-                    currentMons = [userMons[i][0], userMons[i][1],
-                                   userMons[i][2], userMons[i][3], userMons[i][4]]
-                    break
-            break
+            monsNum = len(userMons)
+            if choice > monsNum:
+                print("Pilihan nomor tidak tersedia!")
+                print()
+            else:
+                for i in range(len(userMons)):
+                    if choice == i+1:
+                        currentMons = [userMons[i][0], userMons[i][1],
+                                       userMons[i][2], userMons[i][3], userMons[i][4]]
+                        break
+                break
+        except ValueError:
+            print("Masukkan perintah yang valid!")
+            print()
     return (currentMons)
 
 
@@ -91,143 +90,163 @@ def dmgCalc(tempAtk, enemy_def_power, enemy_hp, percentage):
     return damagecalc, tempAtk, defcalc
 
 
-def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, finished, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc):
+def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc):
+    flee = False
+    cancelPot = False
     print(f"============ TURN {turnCnt} ({mons_type}) ============")
     print("1. Attack")
     print("2. Potion")
     print("3. Flee")
     while True:
-        command = input("Pilih perintah: ")
-        if int(command) == 3:
-            print()
-            print("Anda berhasil kabur dari BATTLE!")
-            finished = True  # keluar dari battle
-            break
+        try:
+            command = (input("Pilih perintah: "))
+            command = int(command)
+            if (command) == 3:
+                print()
+                print("Anda berhasil kabur dari BATTLE!")
+                flee = True  # keluar dari battle
+                break
 
-        elif int(command) == 2:
-            if currentPot == [0, 0, 0]:
-                print("Anda tidak memiliki potion dalam inventory!")
-            else:
-                while True:
-                    type_potion = ""
-                    print()
-                    print("============ POTION LIST ============")
-                    print(
-                        f"1. Strength Potion (Qty: {currentPot[0]}) - Increases ATK Power")
-                    print(
-                        f"2. Resilience Potion (Qty: {currentPot[1]}) - Increases DEF Power")
-                    print(
-                        f"3. Healing Potion (Qty: {currentPot[2]}) - Restores Health")
-                    print("4. Cancel")
-                    print()
+            elif (command) == 2:
+                if currentPot == [0, 0, 0]:
+                    print("Anda tidak memiliki potion dalam inventory!")
+                else:
+                    while True:
+                        type_potion = ""
+                        print()
+                        print("============ POTION LIST ============")
+                        print(
+                            f"1. Strength Potion (Qty: {currentPot[0]}) - Increases ATK Power")
+                        print(
+                            f"2. Resilience Potion (Qty: {currentPot[1]}) - Increases DEF Power")
+                        print(
+                            f"3. Healing Potion (Qty: {currentPot[2]}) - Restores Health")
+                        print("4. Cancel")
+                        print()
 
-                    potCommand = input("Pilih potion atau cancel: ")
-                    if int(potCommand) == 1:
-                        if strengthBool == True:
-                            print(
-                                f"Kamu mencoba memberikan ramuan ini kepada {mons_type}, namun dia menolaknya seolah-olah dia memahami ramuan tersebut sudah tidak bermanfaat lagi.")
-                        elif currentPot[0] > 0:
-                            type_potion = "strength"
-                            print(
-                                f"Setelah meminum ramuan ini, aura kekuatan terlihat mengelilingi {mons_type} dan gerakannya menjadi lebih cepat dan mematikan.")
-                            strengthBool = True
-                            currentPot = [currentPot[0]-1,
-                                          currentPot[1], currentPot[2]]
+                        potCommand = input("Pilih potion atau cancel: ")
+                        if int(potCommand) == 1:
+                            if strengthBool == True:
+                                print(
+                                    f"Kamu mencoba memberikan ramuan ini kepada {mons_type}, namun dia menolaknya seolah-olah dia memahami ramuan tersebut sudah tidak bermanfaat lagi.")
+                            elif currentPot[0] > 0:
+                                type_potion = "strength"
+                                print(
+                                    f"Setelah meminum ramuan ini, aura kekuatan terlihat mengelilingi {mons_type} dan gerakannya menjadi lebih cepat dan mematikan.")
+                                strengthBool = True
+                                currentPot = [currentPot[0]-1,
+                                              currentPot[1], currentPot[2]]
+                                break
+                            else:
+                                print(
+                                    "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
+                        elif int(potCommand) == 2:
+                            if resilienceBool == True:
+                                print(
+                                    f"Kamu mencoba memberikan ramuan ini kepada {mons_type}, namun dia menolaknya seolah-olah dia memahami ramuan tersebut sudah tidak bermanfaat lagi.")
+                            elif currentPot[1] > 0:
+                                type_potion = "resillence"
+                                print(
+                                    f"Setelah meminum ramuan ini, muncul sebuah energi pelindung di sekitar {mons_type} yang membuatnya terlihat semakin tangguh dan sulit dilukai.")
+                                resilienceBool = True
+                                currentPot = [currentPot[0],
+                                              currentPot[1]-1, currentPot[2]]
+                                break
+                            else:
+                                print(
+                                    "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
+                        elif int(potCommand) == 3:
+                            if healingBool == True:
+                                print(
+                                    f"Kamu mencoba memberikan ramuan ini kepada {mons_type}, namun dia menolaknya seolah-olah dia memahami ramuan tersebut sudah tidak bermanfaat lagi.")
+                            elif currentPot[2] > 0:
+                                type_potion = "healing"
+                                print(
+                                    f"Setelah meminum ramuan ini, luka-luka yang ada di dalam tubuh {mons_type} sembuh dengan cepat. Dalam sekejap, {mons_type} terlihat kembali prima dan siap melanjutkan pertempuran.")
+                                healingBool = True
+                                currentPot = [currentPot[0],
+                                              currentPot[1], currentPot[2]-1]
+                                break
+                            else:
+                                print(
+                                    "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
+                        elif int(potCommand) == 4:
+                            cancelPot = True
                             break
                         else:
                             print(
-                                "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
-                    elif int(potCommand) == 2:
-                        if resilienceBool == True:
-                            print(
-                                f"Kamu mencoba memberikan ramuan ini kepada {mons_type}, namun dia menolaknya seolah-olah dia memahami ramuan tersebut sudah tidak bermanfaat lagi.")
-                        elif currentPot[1] > 0:
-                            type_potion = "resillence"
-                            print(
-                                f"Setelah meminum ramuan ini, muncul sebuah energi pelindung di sekitar {mons_type} yang membuatnya terlihat semakin tangguh dan sulit dilukai.")
-                            resilienceBool = True
-                            currentPot = [currentPot[0],
-                                          currentPot[1]-1, currentPot[2]]
-                            break
-                        else:
-                            print(
-                                "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
-                    elif int(potCommand) == 3:
-                        if healingBool == True:
-                            print(
-                                f"Kamu mencoba memberikan ramuan ini kepada {mons_type}, namun dia menolaknya seolah-olah dia memahami ramuan tersebut sudah tidak bermanfaat lagi.")
-                        elif currentPot[2] > 0:
-                            type_potion = "healing"
-                            print(
-                                f"Setelah meminum ramuan ini, luka-luka yang ada di dalam tubuh {mons_type} sembuh dengan cepat. Dalam sekejap, {mons_type} terlihat kembali prima dan siap melanjutkan pertempuran.")
-                            healingBool = True
-                            currentPot = [currentPot[0],
-                                          currentPot[1], currentPot[2]-1]
-                            break
-                        else:
-                            print(
-                                "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
-                    elif int(potCommand) == 4:
-                        break
-                    else:
-                        print("Perintah tidak valid. Silahkan pilih perintah diatas!")
-                if type_potion != "":
-                    atk_power, def_power, hp = potion(
-                        type_potion, atk_power, def_power, hp)
+                                "Perintah tidak valid. Silahkan pilih perintah diatas!")
+                    if type_potion != "":
+                        atk_power, def_power, hp = potion(
+                            type_potion, atk_power, def_power, hp)
+                    print()
+                    break
+
+            elif (command) == 1:
+                print()
+                print(f"SCHWINKKK, {mons_type} menyerang {enemy_type} !!!")
+
+                print(enemy_def_power)
+                tempAtk, percentage = playerAtk(LCG, atk_power)
+                damagecalc, tempAtk, defcalc = dmgCalc(
+                    tempAtk, enemy_def_power, enemy_hp, percentage)
+                enemy_hp = int(enemy_hp - damagecalc)
+                print(f"""
+    Name      : {enemy_type}
+    ATK Power : {enemy_atk_power}
+    DEF Power : {enemy_def_power}
+    HP        : {enemy_hp}
+    Level     : {enemy_level}""")
+                print()
+                print(
+                    f"Penjelasan : ATT: {tempAtk} ({percentage}%), Reduced by: {defcalc} ({enemy_def_power}%), ATT Results: {int(damagecalc)}")
                 print()
                 break
 
-        elif int(command) == 1:
+            else:
+                print("Masukkan perintah yang valid")
+        except ValueError:
+            print("Masukkan perintah yang valid!")
             print()
-            print(f"SCHWINKKK, {mons_type} menyerang {enemy_type} !!!")
 
-            print(enemy_def_power)
-            tempAtk, percentage = playerAtk(LCG, atk_power)
-            damagecalc, tempAtk, defcalc = dmgCalc(
-                tempAtk, enemy_def_power, enemy_hp, percentage)
-            enemy_hp = int(enemy_hp - damagecalc)
-            print(f"""
-Name      : {enemy_type}
-ATK Power : {enemy_atk_power}
-DEF Power : {enemy_def_power}
-HP        : {enemy_hp}
-Level     : {enemy_level}""")
-            print()
-            print(
-                f"Penjelasan : ATT: {tempAtk} ({percentage}%), Reduced by: {defcalc} ({enemy_def_power}%), ATT Results: {int(damagecalc)}")
-            print()
-            break
-    return finished
+    if enemy_hp <= 0:
+        win = True
+    else:
+        win = False
+    return atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancelPot, flee
 
 
 def enemyTurn(mons_type, atk_power, def_power, hp, level, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc):
-    finished = False
     print(f"============ TURN {turnCnt} ({enemy_type}) ============")
     print()
     print(f"SCHWINKKK, {enemy_type} menyerang {mons_type} !!!")
 
-    print(def_power)
     tempAtk, percentage = enemyAtk(LCG, enemy_atk_power)
     damagecalc, tempAtk, defcalc = dmgCalc(tempAtk, def_power, hp, percentage)
     hp = int(hp - damagecalc)
     print(f"""
 Name      : {mons_type}
-ATK Power : {atk_power}
-DEF Power : {def_power}
-HP        : {hp}
+ATK Power : {int(atk_power)}
+DEF Power : {int(def_power)}
+HP        : {int(hp)}
 Level     : {level}""")
     print()
     print(
         f"Penjelasan : ATT: {tempAtk} ({percentage}%), Reduced by: {defcalc} ({def_power}%), ATT Results: {int(damagecalc)}")
     print()
-    return finished
+    if hp <= 0:
+        lose = True
+    else:
+        lose = False
+    return lose, hp
 
 
-def BATTLE(mons, mInv, rngEnemy):
+def BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel):
     strengthBool = False
     resilienceBool = False
     healingBool = False
     rngEnemy = rngEnemy(LCG, mons)
+    rngLevel = rngLevel(LCG)
     chosen = mons[rngEnemy-1]
 
     enemy_type = chosen[1]
@@ -301,7 +320,8 @@ Level     : {enemy[4]}""")
     |  |   |   |
     \._\   \._\ 
 """)
-    print(f"RAWRRR, Agent X mengeluarkan monster {mons_type} !!!")
+    print(
+        f"RAWRRR, Agent {currentUser[1]} mengeluarkan monster {mons_type} !!!")
     print(f"""
 Name      : {mons_type}
 ATK Power : {atk_power}
@@ -310,14 +330,35 @@ HP        : {hp}
 Level     : {level}""")
 
     turnCnt = 1
-    finished = False
+    win = False
+    lose = False
     currentPot = userPot(iInv)
-    while not finished:
-        finished = yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool,
-                            turnCnt, finished, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc)
-        finished = enemyTurn(mons_type, atk_power, def_power, hp, level, enemy_type,
-                             enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc)
-        turnCnt += 1
+    while (not win) and (not lose):
+        atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancelPot, flee = yourTurn(
+            mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc)
+
+        if not flee:
+            if not cancelPot:
+                if not win:
+                    lose, hp = enemyTurn(mons_type, atk_power, def_power, hp, level, enemy_type,
+                                         enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc)
+                    turnCnt += 1
+                else:
+                    break
+            else:
+                pass
+        else:
+            break
+
+    if win:
+        rewardOC = rngOC(LCG)
+        currentUser[4] += rewardOC
+        print(f"Selamat, Anda berhasil mengalahkan monster {enemy_type} !!!")
+        print(f"Total OC yang diperoleh: {rewardOC}")
+        print()
+    if lose:
+        print(
+            f"Yahhh, Anda dikalahkan monster {enemy_type}. Jangan menyerah, coba lagi !!!")
 
 
-BATTLE(mons, mInv, rngEnemy)
+# BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel)
