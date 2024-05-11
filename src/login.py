@@ -78,6 +78,6 @@ def LOGIN(loginBool, wrongUsername, wrongPassword, userpas):
     elif wrongPassword:
         print("Password salah!")
     print()
-
+    return loginBool
 
 # LOGIN(loginBool, wrongUsername, wrongPassword, userpas)
