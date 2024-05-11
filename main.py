@@ -20,7 +20,7 @@ print("SELAMAT DATANG PADA PROGRAM YANG SEDANG DALAM PERCOBAAN INI!!!")
 while True:
     pilihan = input(">>> ")
     if pilihan.upper() == "REGISTER":
-        REGISTER(cnt)
+        userpas = REGISTER(cnt)
     if pilihan.upper() == "LOGIN":
         login = LOGIN(loginBool, wrongUsername, wrongPassword, userpas)
     if pilihan.upper() == "LOGOUT":
