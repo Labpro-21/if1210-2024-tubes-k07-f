@@ -24,14 +24,16 @@ while True:
     if pilihan.upper() == "REGISTER":
         if login:
             print("Register gagal!")
-            print(f"Anda telah login dengan username {currentUser[1]}, silahkan lakukan “LOGOUT” sebelum melakukan register.")
+            print(
+                f"Anda telah login dengan username {currentUser[1]}, silahkan lakukan “LOGOUT” sebelum melakukan register.")
             print()
         else:
             userpas = REGISTER(cnt)
     if pilihan.upper() == "LOGIN":
         if login:
             print("Login gagal!")
-            print(f"Anda telah login dengan username {currentUser[1]}, silahkan lakukan “LOGOUT” sebelum melakukan login kembali.")
+            print(
+                f"Anda telah login dengan username {currentUser[1]}, silahkan lakukan “LOGOUT” sebelum melakukan login kembali.")
             print()
         else:
             login = LOGIN(loginBool, wrongUsername, wrongPassword, userpas)
@@ -47,7 +49,7 @@ while True:
             print()
     if pilihan.upper() == "BATTLE":
         if login:
-            userpas = BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel)
+            userpas, mInv, iInv = BATTLE(mons, mInv, iInv, rngEnemy, currentUser, rngLevel)
         else:
             print("Anda belum login. Silahkan login terlebih dahulu..")
             print()
@@ -60,8 +62,8 @@ while True:
         else:
             print("Anda belum login. Silahkan login terlebih dahulu..")
             print()
-    if pilihan.upper() == "SAVE":
-        SAVE(userpas, mons, mShop, mInv, iShop, iInv)
+    # if pilihan.upper() == "SAVE":
+        # SAVE(userpas, mons, mShop, mInv, iShop, iInv) # belum bisa
     if pilihan.upper() == "LOAD":
         break
     if pilihan.upper() == "EXIT":
