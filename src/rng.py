@@ -1,6 +1,7 @@
 import time
 from csv import *
 
+
 class LCG:
     def __init__(self, min_val, max_val):
         self.m = 2**32
@@ -27,8 +28,9 @@ def rngLevel(LCG):
     for _ in range(11):
         lcgList.append(lcg.generate())
 
-    rng = (lcgList[5])
+    rng = (lcgList[3])
     return rng
+
 
 def rngEnemy(LCG, mons):
     lcgList = []
@@ -38,7 +40,8 @@ def rngEnemy(LCG, mons):
 
     rng = (lcgList[5])
     return rng
-    
+
+
 def rngOC(LCG):
     lcgList = []
     lcg = LCG(5, 31)
@@ -47,5 +50,31 @@ def rngOC(LCG):
 
     rng = (lcgList[5])
     return rng
+
+
+def rngCapture(LCG, enemy_level):
+    if enemy_level == 1:
+        limit = 75
+    elif enemy_level == 2:
+        limit = 50
+    elif enemy_level == 3:
+        limit = 25
+    elif enemy_level == 4:
+        limit = 10
+    elif enemy_level == 5:
+        limit = 5
+
+    lcgList = []
+    lcg = LCG(0, 101)
+    for _ in range(11):
+        lcgList.append(lcg.generate())
+
+    rng = (lcgList[5])
+    if rng <= limit:
+        capture = True
+    else:
+        capture = False
+
+    return capture
 
 # rng = (rng(LCG))
