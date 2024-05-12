@@ -45,6 +45,15 @@ def userPot(iInv):
     currentPot = [strength, resilience, healing]
     return (currentPot)
 
+def userBall(iInv):
+    monsterBall = 0
+    for i in range(1, len(iInv)):
+        if int(iInv[i][0]) == int(currentUser[0]):
+            if iInv[i][1] == "monster_ball":
+                monsterBall = int(iInv[i][2])
+                ballIndex = i
+    return (monsterBall, i)
+
 
 def playerAtk(LCG, atk_power):
     batas_bawah = atk_power * 70 / 100
@@ -90,22 +99,67 @@ def dmgCalc(tempAtk, enemy_def_power, enemy_hp, percentage):
     return damagecalc, tempAtk, defcalc
 
 
-def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc):
+def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons):
+    end = False
     flee = False
-    cancelPot = False
-    print(f"============ TURN {turnCnt} ({mons_type}) ============")
-    print("1. Attack")
-    print("2. Potion")
-    print("3. Flee")
+    cancel = False
     while True:
+        print(f"============ TURN {turnCnt} ({mons_type}) ============")
+        print("1. Attack")
+        print("2. Use Potion")
+        print("3. Use Monster Ball")
+        print("4. Flee")
         try:
             command = (input("Pilih perintah: "))
             command = int(command)
-            if (command) == 3:
+            if (command) == 4:
                 print()
                 print("Anda berhasil kabur dari BATTLE!")
                 flee = True  # keluar dari battle
                 break
+
+            elif (command) == 3:
+                print()
+                monsterBall, ballIndex = userBall(iInv)
+                alreadyHaveMons = False
+                for i in range(len(userMons)):
+                    if enemy_type == userMons[i][0]:
+                        alreadyHaveMons = True
+
+                if alreadyHaveMons:
+                    print(f"Anda sudah memiliki monster {enemy_type} dalam inventory!")
+                    print()
+                    cancel = True
+                    break
+                elif monsterBall > 0:
+                    monsterBall -= 1
+                    iInv[ballIndex][2] = int(iInv[ballIndex][2])
+                    iInv[ballIndex][2] -= 1
+                    print (iInv)
+                    print("Swoosshhhhh, Anda mengeluarkan Monster Ball !!!")
+                    capture = rngCapture(LCG,enemy_level)
+                    if capture:
+                        print(f"Selamat, Anda berhasil mendapatkan monster {enemy_type} !!!")
+                        mInv.append([currentUser[0], chosenEnemy[0], enemy_level])
+                        end = True
+
+                        print(f"""
+Name      : {enemy_type}
+ATK Power : {enemy_atk_power}
+DEF Power : {enemy_def_power}
+HP        : {enemy_hp}
+Level     : {enemy_level}""")
+                        print()
+                        print(f"Sisa Monster Ball Anda: {monsterBall}")
+                        print()
+                        break
+                    else:
+                        print(f"Yahhh, Anda belum berhasil mendapatkan monster {enemy_type} !!!")
+                        print()
+                        print(f"Sisa Monster Ball Anda: {monsterBall}")
+                        print()
+                else:
+                    print("Anda tidak memiliki Monster Ball dalam inventory!")
 
             elif (command) == 2:
                 if currentPot == [0, 0, 0]:
@@ -171,7 +225,7 @@ def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, 
                                 print(
                                     "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
                         elif int(potCommand) == 4:
-                            cancelPot = True
+                            cancel = True
                             break
                         else:
                             print(
@@ -213,7 +267,7 @@ def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, 
         win = True
     else:
         win = False
-    return atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancelPot, flee
+    return atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancel, flee, end, iInv
 
 
 def enemyTurn(mons_type, atk_power, def_power, hp, level, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc):
@@ -241,18 +295,18 @@ Level     : {level}""")
     return lose, hp
 
 
-def BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel):
+def BATTLE(mons, mInv, iInv, rngEnemy, currentUser, rngLevel):
     strengthBool = False
     resilienceBool = False
     healingBool = False
     rngEnemy = rngEnemy(LCG, mons)
     rngLevel = rngLevel(LCG)
-    chosen = mons[rngEnemy-1]
+    chosenEnemy = mons[rngEnemy]
 
-    enemy_type = chosen[1]
-    enemy_atk_power = (int(chosen[2]))
-    enemy_def_power = (int(chosen[3]))
-    enemy_hp = (int(chosen[4]))
+    enemy_type = chosenEnemy[1]
+    enemy_atk_power = (int(chosenEnemy[2]))
+    enemy_def_power = (int(chosenEnemy[3]))
+    enemy_hp = (int(chosenEnemy[4]))
     enemy_level = rngLevel
     enemy_atk_power, enemy_def_power, enemy_hp = monster(
         enemy_atk_power, enemy_def_power, enemy_hp, enemy_level)
@@ -275,11 +329,11 @@ __.-'               '-.__""")
 
     print(f"RAWRRR, Monster {enemy[0]} telah muncul !!!")
     print(f"""
-Name      : {enemy[0]}
-ATK Power : {enemy[1]}
-DEF Power : {enemy[2]}
-HP        : {enemy[3]}
-Level     : {enemy[4]}""")
+Name      : {enemy_type}
+ATK Power : {enemy_atk_power}
+DEF Power : {enemy_def_power}
+HP        : {enemy_hp}
+Level     : {enemy_level}""")
 
     print("============ MONSTER LIST ============")
     tempMons = []
@@ -334,19 +388,22 @@ Level     : {level}""")
     lose = False
     currentPot = userPot(iInv)
     while (not win) and (not lose):
-        atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancelPot, flee = yourTurn(
-            mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc)
+        atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancel, flee, end, iInv = yourTurn(
+            mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons)
 
         if not flee:
-            if not cancelPot:
-                if not win:
-                    lose, hp = enemyTurn(mons_type, atk_power, def_power, hp, level, enemy_type,
-                                         enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc)
-                    turnCnt += 1
+            if not end:
+                if not cancel:
+                    if not win:
+                        lose, hp = enemyTurn(mons_type, atk_power, def_power, hp, level, enemy_type,
+                                            enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc)
+                        turnCnt += 1
+                    else:
+                        break
                 else:
-                    break
+                    pass
             else:
-                pass
+                break
         else:
             break
 
@@ -364,6 +421,6 @@ Level     : {level}""")
         print(
             f"Yahhh, Anda dikalahkan monster {enemy_type}. Jangan menyerah, coba lagi !!!")
 
-    return userpas
+    return userpas, mInv, iInv
 
 # BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel)
