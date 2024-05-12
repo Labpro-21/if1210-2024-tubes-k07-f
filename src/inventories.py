@@ -1,20 +1,13 @@
 from src.login import *  # MASIH PERLU DI FIX INVENTORY
 import os
 
-from src.csv import *
-from src.register import *
-
-mons = read_csv(monster_filepath())
-iInv = read_csv(item_inventory_filepath())
-
-
 def mInvList(invCount, currentUser, mInv, mons, mTemp):
     for i in range(len(mInv)):
         for j in range(len(mons)):
             if str(mInv[i][0]) == str(currentUser[0]):
                 if str(mInv[i][1]) == str(mons[j][0]):
                     print(
-                        f"{invCount+1}. Monster       (Name: {mons[j][1]}, Lvl: {mInv[j][2]}, HP: {mons[j][4]})")
+                        f"{invCount+1}. Monster       (Name: {mons[j][1]}, Lvl: {mInv[i][2]}, HP: {mons[j][4]})")
                     invCount += 1
                     stats = [invCount, mons[j][1], int(mons[j][2]),
                              int(mons[j][3]), int(mons[j][4]), int(mInv[i][2])]
