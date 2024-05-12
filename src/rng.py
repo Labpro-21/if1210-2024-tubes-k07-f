@@ -32,7 +32,7 @@ def rngLevel(LCG):
 
 def rngEnemy(LCG, mons):
     lcgList = []
-    lcg = LCG(1, len(mons))  # Generate integers between 0 and 100
+    lcg = LCG(1, len(mons))
     for _ in range(11):
         lcgList.append(lcg.generate())
 
@@ -41,7 +41,7 @@ def rngEnemy(LCG, mons):
     
 def rngOC(LCG):
     lcgList = []
-    lcg = LCG(5, 30)  # Generate integers between 0 and 100
+    lcg = LCG(5, 31)
     for _ in range(11):
         lcgList.append(lcg.generate())
 
