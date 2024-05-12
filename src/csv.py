@@ -171,9 +171,9 @@ def item_inventory_filepath():
     file_path = filepath+"/data/item_inventory.csv"
     return file_path
 
-# userpas = read_csv(user_filepath())
-# mons = read_csv(monster_filepath())
-# mShop = read_csv(monster_shop_filepath())
-# mInv = read_csv(monster_inventory_filepath())
-# iShop = read_csv(item_shop_filepath())
-# iInv = read_csv(item_inventory_filepath())
+userpas = read_csv(user_filepath())
+mons = read_csv(monster_filepath())
+mShop = read_csv(monster_shop_filepath())
+mInv = read_csv(monster_inventory_filepath())
+iShop = read_csv(item_shop_filepath())
+iInv = read_csv(item_inventory_filepath())
