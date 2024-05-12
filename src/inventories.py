@@ -1,4 +1,5 @@
 from src.login import *  # MASIH PERLU DI FIX INVENTORY
+from src.battle import *
 import os
 
 def mInvList(invCount, currentUser, mInv, mons, mTemp):
@@ -18,11 +19,19 @@ def mInvList(invCount, currentUser, mInv, mons, mTemp):
 def iInvList(invCount, currentUser, iInv, mons, iTemp):
     for i in range(len(iInv)):
         if str(iInv[i][0]) == str(currentUser[0]):
-            print(
-                f"{invCount+1}. Potion        (Type: {iInv[i][1]}, Qty: {iInv[i][2]})")
-            invCount += 1
-            potInfo = [invCount, iInv[i][1], int(iInv[i][2])]
-            iTemp.append(potInfo)
+            if str(iInv[i][1]) != "monster_ball":
+                print(f"{invCount+1}. Potion        (Type: {iInv[i][1]}, Qty: {iInv[i][2]})")
+                invCount += 1
+                potInfo = [invCount, iInv[i][1], int(iInv[i][2])]
+                iTemp.append(potInfo)
+    
+    for i in range(len(iInv)):
+        if str(iInv[i][0]) == str(currentUser[0]):
+            if str(iInv[i][1]) == "monster_ball":
+                print (f"{invCount+1}. Monster Ball  (Qty: {iInv[i][2]})")
+                invCount += 1
+                potInfo = [invCount, iInv[i][1], int(iInv[i][2])]
+                iTemp.append(potInfo)
     return iTemp
 
 
@@ -70,11 +79,18 @@ def INVENTORY(currentUser, mInv, iInv, mons):
                             print(f"Level     : {mTemp[i][5]}")
                             print()
                             break
-                elif int(pilihanInv) > int(len(mTemp)):
+                elif int(len(mTemp)) < int(pilihanInv) < int((len(mTemp))+(len(iTemp))):
                     for i in range(len(iTemp)):
                         if int(pilihanInv) == iTemp[i][0]:
                             print("Potion")
                             print(f"Type      : {iTemp[i][1]}")
+                            print(f"Quantity  : {iTemp[i][2]}")
+                            print()
+                            break
+                elif int(pilihanInv) == int((len(mTemp))+(len(iTemp))):
+                    for i in range(len(iTemp)):
+                        if int(pilihanInv) == iTemp[i][0]:
+                            print("Monster Ball")
                             print(f"Quantity  : {iTemp[i][2]}")
                             print()
                             break
