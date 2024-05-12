@@ -15,16 +15,28 @@ from src.inventories import *
 from src.shopcurrency import *
 from src.battle import *
 from src.rng import *
+from src.overwrite import *
 
 print("SELAMAT DATANG PADA PROGRAM YANG SEDANG DALAM PERCOBAAN INI!!!")
+login = False
 while True:
     pilihan = input(">>> ")
     if pilihan.upper() == "REGISTER":
-        userpas = REGISTER(cnt)
+        if login:
+            print("Register gagal!")
+            print(f"Anda telah login dengan username {currentUser[1]}, silahkan lakukan “LOGOUT” sebelum melakukan register.")
+            print()
+        else:
+            userpas = REGISTER(cnt)
     if pilihan.upper() == "LOGIN":
-        login = LOGIN(loginBool, wrongUsername, wrongPassword, userpas)
+        if login:
+            print("Login gagal!")
+            print(f"Anda telah login dengan username {currentUser[1]}, silahkan lakukan “LOGOUT” sebelum melakukan login kembali.")
+            print()
+        else:
+            login = LOGIN(loginBool, wrongUsername, wrongPassword, userpas)
     if pilihan.upper() == "LOGOUT":
-        LOGOUT(currentUser)
+        login = LOGOUT(currentUser, login)
     if pilihan.upper() == "HELP":
         HELP(currentUser)
     if pilihan.upper() == "INVENTORY":
@@ -35,7 +47,7 @@ while True:
             print()
     if pilihan.upper() == "BATTLE":
         if login:
-            BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel)
+            userpas = BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel)
         else:
             print("Anda belum login. Silahkan login terlebih dahulu..")
             print()
@@ -48,6 +60,10 @@ while True:
         else:
             print("Anda belum login. Silahkan login terlebih dahulu..")
             print()
+    if pilihan.upper() == "SAVE":
+        SAVE(userpas, mons, mShop, mInv, iShop, iInv)
+    if pilihan.upper() == "LOAD":
+        break
     if pilihan.upper() == "EXIT":
         break
 

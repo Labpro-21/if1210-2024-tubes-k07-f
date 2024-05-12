@@ -5,8 +5,6 @@ monsterAwal = ["Pikachow", "Bulbu", "Zeze", "Zuko", "Chacha"]
 validUsername = True
 notExistUsername = True
 
-userpas = read_csv(user_filepath())
-mInv = read_csv(monster_inventory_filepath())
 cnt = len(userpas)
 
 
