@@ -12,6 +12,8 @@ from src.login import *
 from src.logout import *
 from src.help import *
 from src.inventories import *
+from src.shopcurrency import *
+from src.shopmanagement import *
 
 print("SELAMAT DATANG PADA PROGRAM YANG SEDANG DALAM PERCOBAAN INI!!!")
 while True:
@@ -26,6 +28,10 @@ while True:
         HELP(currentUser)
     if pilihan.upper() == "INVENTORY":
         INVENTORY(currentUser, mInv, iInv, mons)
+    if pilihan.upper() == "SHOP":
+        SHOP(currentUser, mShop, iShop, mons)
+    if pilihan.upper() == "SHOP MANAGEMENT" :
+        SHOP_MANAGEMENT (currentUser, mShop, iShop, mons)
     if pilihan.upper() == "EXIT":
         break
 
