@@ -352,7 +352,11 @@ Level     : {level}""")
 
     if win:
         rewardOC = rngOC(LCG)
-        currentUser[4] += rewardOC
+        currentUser[4] = int(currentUser[4])
+        (currentUser[4]) += rewardOC
+        for i in range(1, len(userpas)):
+            if int(userpas[i][0]) == int(currentUser[0]):
+                userpas[i][4] = currentUser[4]
         print(f"Selamat, Anda berhasil mengalahkan monster {enemy_type} !!!")
         print(f"Total OC yang diperoleh: {rewardOC}")
         print()
@@ -360,5 +364,6 @@ Level     : {level}""")
         print(
             f"Yahhh, Anda dikalahkan monster {enemy_type}. Jangan menyerah, coba lagi !!!")
 
+    return userpas
 
 # BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel)
