@@ -73,6 +73,6 @@ def LOGIN(loginBool, wrongUsername, wrongPassword, userpas):
         print("Password salah!")
     print()
     print(currentUser)
-    return loginBool
+    return loginBool, currentUser
 
 # LOGIN(loginBool, wrongUsername, wrongPassword, userpas)
