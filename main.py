@@ -38,7 +38,7 @@ while True:
         else:
             login = LOGIN(loginBool, wrongUsername, wrongPassword, userpas)
     if pilihan.upper() == "LOGOUT":
-        login = LOGOUT(currentUser, login)
+        login, currentUser = LOGOUT(currentUser, login)
     if pilihan.upper() == "HELP":
         HELP(currentUser)
     if pilihan.upper() == "INVENTORY":
