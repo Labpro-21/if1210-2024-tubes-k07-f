@@ -34,16 +34,22 @@ def userPot(iInv):
     strength = 0
     resilience = 0
     healing = 0
+    strengthIndex = 1
+    resilienceIndex = 1
+    healingIndex = 1
     for i in range(1, len(iInv)):
         if int(iInv[i][0]) == int(currentUser[0]):
             if iInv[i][1] == "strength":
                 strength = int(iInv[i][2])
+                strengthIndex = i
             if iInv[i][1] == "resilience":
                 resilience = int(iInv[i][2])
+                resilienceIndex = i
             if iInv[i][1] == "healing":
                 healing = int(iInv[i][2])
+                healingIndex = i
     currentPot = [strength, resilience, healing]
-    return (currentPot)
+    return (currentPot, strengthIndex, resilienceIndex, healingIndex)
 
 def userBall(iInv):
     monsterBall = 0
@@ -99,7 +105,7 @@ def dmgCalc(tempAtk, enemy_def_power, enemy_hp, percentage):
     return damagecalc, tempAtk, defcalc
 
 
-def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons):
+def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons):
     end = False
     flee = False
     cancel = False
@@ -135,7 +141,6 @@ def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, 
                     monsterBall -= 1
                     iInv[ballIndex][2] = int(iInv[ballIndex][2])
                     iInv[ballIndex][2] -= 1
-                    print (iInv)
                     print("Swoosshhhhh, Anda mengeluarkan Monster Ball !!!")
                     capture = rngCapture(LCG,enemy_level)
                     if capture:
@@ -190,6 +195,8 @@ Level     : {enemy_level}""")
                                 strengthBool = True
                                 currentPot = [currentPot[0]-1,
                                               currentPot[1], currentPot[2]]
+                                iInv[strengthIndex][2] = int(iInv[strengthIndex][2])
+                                iInv[strengthIndex][2] -= 1
                                 break
                             else:
                                 print(
@@ -205,6 +212,8 @@ Level     : {enemy_level}""")
                                 resilienceBool = True
                                 currentPot = [currentPot[0],
                                               currentPot[1]-1, currentPot[2]]
+                                iInv[resilienceIndex][2] = int(iInv[resilienceIndex][2])
+                                iInv[resilienceIndex][2] -= 1
                                 break
                             else:
                                 print(
@@ -220,6 +229,8 @@ Level     : {enemy_level}""")
                                 healingBool = True
                                 currentPot = [currentPot[0],
                                               currentPot[1], currentPot[2]-1]
+                                iInv[healingIndex][2] = int(iInv[healingIndex][2])
+                                iInv[healingIndex][2] -= 1
                                 break
                             else:
                                 print(
@@ -386,10 +397,10 @@ Level     : {level}""")
     turnCnt = 1
     win = False
     lose = False
-    currentPot = userPot(iInv)
+    currentPot, strengthIndex, resilienceIndex, healingIndex = userPot(iInv)
     while (not win) and (not lose):
         atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancel, flee, end, iInv = yourTurn(
-            mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons)
+            mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons)
 
         if not flee:
             if not end:
