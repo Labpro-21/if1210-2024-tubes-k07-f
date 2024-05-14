@@ -52,7 +52,7 @@ def userBall(iInv):
             if iInv[i][1] == "monster_ball":
                 monsterBall = int(iInv[i][2])
                 ballIndex = i
-    return (monsterBall, i)
+    return (monsterBall, ballIndex)
 
 
 def playerAtk(LCG, atk_power):
