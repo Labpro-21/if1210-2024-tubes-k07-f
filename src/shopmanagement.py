@@ -22,20 +22,26 @@ def mShopList(shopCount, mShop, mons, msTemp):
     return msTemp, shopCount
 
 def notmShopList(shopCount, mShop, mons, nmsTemp):
-    shopCount = len(mShop)-1
-    print ("ID | Type          | ATK Power | DEF Power | HP   |")
-    for i in range(1,len(mons)): 
-        for j in range (1, len(mShop)):
-            for k in range (len (nmsTemp)) :
-                if mons [i][0] != mShop [j][0] and mons[i][1] != nmsTemp [k][1] :
-                    print(
-                        f"{shopCount+1} | {mons[i][1]}          | {mons[i][2]} | {mons[i][3]} | {mons[i][4]}")
-                    shopCount += 1
-                    stats = [shopCount, mons[i][1], int(mons[i][2]),
-                        int(mons[i][3]), int(mons[i][4])]
-                    nmsTemp.append(stats)
+    processed_ids = set()
+    shopCount = len(mShop) - 1
+    print("ID | Type          | ATK Power | DEF Power | HP   |")
+    for i in range(1, len(mons)): 
+        is_in_shop = False
+        for j in range(1, len(mShop)):
+            if mons[i][0] == mShop[j][0]:
+                is_in_shop = True
+                break
+        if not is_in_shop and mons[i][0] not in processed_ids:
+            print(
+                f"{shopCount+1} | {mons[i][1]}          | {mons[i][2]} | {mons[i][3]} | {mons[i][4]}")
+            shopCount += 1
+            stats = [shopCount, mons[i][1], int(mons[i][2]),
+                     int(mons[i][3]), int(mons[i][4])]
+            id_mons_to_shop = mons [i][0]
+            nmsTemp.append(stats)
+            processed_ids.add(mons[i][0])
     shopCount = 0
-    return nmsTemp, shopCount
+    return nmsTemp, shopCount, id_mons_to_shop
 
 def iShopList(shopCount,iShop, isTemp):
     print ("ID | Type                | Stok | Harga")
@@ -48,23 +54,24 @@ def iShopList(shopCount,iShop, isTemp):
     isTemp.append(potInfo)
     return isTemp, shopCount
 
-def notiShopList(shopCount,iShop, nisTemp):
-    shopCount = len(iShop)
-    print ("ID | Type                |")
-    for i in range(1,len(iShop)):
-        for j in range (1, len(iShop)) :
-            if iShop [i][0] == iShop [j][0] :
-                print(
-                    f"{shopCount+1} | {iShop[i][0]}")
-                shopCount += 1
-                potInfo = [shopCount, iShop[i][1], int(iShop[i][2])]
-            shopCount = 0 
+def notiShopList(shopCount, iShop, nisTemp):
+    processed_ids = set()
+    shopCount = len(iShop) - 1
+    print("ID | Type                |")
+    for i in range(1, len(iShop)):
+        if iShop[i][0] not in processed_ids:
+            print(f"{shopCount+1} | {iShop[i][0]}")
+            shopCount += 1
+            potInfo = [shopCount, iShop[i][1], int(iShop[i][2])]
             nisTemp.append(potInfo)
+            processed_ids.add(iShop[i][0])
+    shopCount = 0
     return nisTemp, shopCount
 
 def SHOP_MANAGEMENT (currentUser, mShop, iShop, mons) :
     action = "lihat"
     shopCount = 0
+    id_mons_to_shop = 0
     msTemp = []
     nmsTemp = []
     isTemp = []
@@ -88,6 +95,13 @@ def SHOP_MANAGEMENT (currentUser, mShop, iShop, mons) :
                 stok_mons = int(input("Masukkan stok awal: "))
                 price_mons = int(input("Masukkan harga: "))
                 print (f"{nmsTemp [id_mons-len(mShop)][1]} telah berhasil ditambahkan ke dalam shop! ")
-                mons_to_shop.append ()
+                mons_to_shop.append (id_mons_to_shop)
+                mons_to_shop.append (stok_mons)
+                mons_to_shop.append (price_mons)
+                mShop.append (mons_to_shop)
             elif jenis_tambah == "potion" :
                 notiShopList (shopCount,iShop, nisTemp)
+                id_pot = int(input("Masukkan id potion: "))
+                stok_pot = int(input("Masukkan stok awal: "))
+                price_pot = int(input("Masukkan harga: "))
+                print (f"{nisTemp [id_pot-len(iShop)][1]} telah berhasil ditambahkan ke dalam shop! ")

@@ -7,6 +7,7 @@ import argparse
 import datetime
 
 from src.csv import *
+from src.rng import *
 from src.register import *
 from src.login import *
 from src.logout import *
@@ -14,6 +15,9 @@ from src.help import *
 from src.inventories import *
 from src.shopcurrency import *
 from src.shopmanagement import *
+from src.battle import *
+from src.arena import *
+from src.monster import *
 
 print("SELAMAT DATANG PADA PROGRAM YANG SEDANG DALAM PERCOBAAN INI!!!")
 while True:
@@ -32,6 +36,10 @@ while True:
         SHOP(currentUser, mShop, iShop, mons)
     if pilihan.upper() == "SHOP MANAGEMENT" :
         SHOP_MANAGEMENT (currentUser, mShop, iShop, mons)
+    if pilihan.upper() == "BATTLE" :
+        BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel, iInv)
+    if pilihan.upper() == "ARENA" :
+        ARENA(mons, mInv, rngEnemy, currentUser, rngLevel)
     if pilihan.upper() == "EXIT":
         break
 
