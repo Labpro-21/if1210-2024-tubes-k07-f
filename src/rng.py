@@ -1,54 +1,51 @@
 import time
 from csv import *
 
-
-class LCG:
-    def __init__(self, min_val, max_val):
-        self.m = 2**32
-        self.a = 1664525
-        self.c = 1013904223
-        self.seed = int(time.time())  # Initialize seed with current time
-        self.min_val = min_val
-        self.max_val = max_val
-
-    def set_seed(self, seed):
-        self.seed = seed
-
-    def generate(self):
-        self.seed = (self.a * self.seed + self.c) % self.m
-        scaled_number = self.min_val + \
-            (self.seed / self.m) * (self.max_val - self.min_val)
-        return int(scaled_number)  # Convert the scaled number to an integer
+def next_seed():
+    return int(time.time())
 
 
-# Example usage
+def LCG(min_val, max_val, seed, a, c, m):
+    seed = (a * seed + c) % m
+    return min_val + (seed % (max_val - min_val + 1))
+
+
 def rngLevel(LCG):
-    lcgList = []
-    lcg = LCG(1, 6)  # Generate integers between 0 and 100
-    for _ in range(11):
-        lcgList.append(lcg.generate())
+    m = 2**32
+    a = 82
+    c = 100
+    min_val = 1
+    max_val = 5
 
-    rng = (lcgList[3])
+    seed = next_seed()
+    random_integer = LCG(min_val, max_val, seed, a, c, m)
+    rng = random_integer
     return rng
 
 
 def rngEnemy(LCG, mons):
-    lcgList = []
-    lcg = LCG(1, len(mons))
-    for _ in range(11):
-        lcgList.append(lcg.generate())
+    m = 2**32
+    a = 51
+    c = 100
+    min_val = 1
+    max_val = len(mons)-1
 
-    rng = (lcgList[5])
+    seed = next_seed()
+    random_integer = LCG(min_val, max_val, seed, a, c, m)
+    rng = random_integer
     return rng
 
 
 def rngOC(LCG):
-    lcgList = []
-    lcg = LCG(5, 31)
-    for _ in range(11):
-        lcgList.append(lcg.generate())
+    m = 2**32
+    a = 82
+    c = 100
+    min_val = 5
+    max_val = 30
 
-    rng = (lcgList[5])
+    seed = next_seed()
+    random_integer = LCG(min_val, max_val, seed, a, c, m)
+    rng = random_integer
     return rng
 
 
@@ -64,12 +61,16 @@ def rngCapture(LCG, enemy_level):
     elif enemy_level == 5:
         limit = 5
 
-    lcgList = []
-    lcg = LCG(0, 101)
-    for _ in range(11):
-        lcgList.append(lcg.generate())
+    m = 2**32
+    a = 82
+    c = 100
+    min_val = 1
+    max_val = 100
 
-    rng = (lcgList[5])
+    seed = next_seed()
+    random_integer = LCG(min_val, max_val, seed, a, c, m)
+    rng = random_integer
+
     if rng <= limit:
         capture = True
     else:
@@ -77,4 +78,5 @@ def rngCapture(LCG, enemy_level):
 
     return capture
 
-# rng = (rng(LCG))
+
+
