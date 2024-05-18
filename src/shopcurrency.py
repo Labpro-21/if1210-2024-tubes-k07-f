@@ -57,9 +57,9 @@ def SHOP (currentUser, mShop, iShop, mons) :
         if aksi == "lihat" :
             jenis = str(input("Mau lihat apa? (monster/potion): "))
             if jenis == "monster" :
-                mShopList(shopCount, currentUser, mShop, mons, msTemp)
+                mShopList(shopCount, mShop, mons, msTemp)
             elif jenis == "potion" :
-                iShopList(shopCount, currentUser, iShop, isTemp)
+                iShopList(shopCount, iShop, isTemp)
         elif aksi == "beli" :
             print (f"Jumlah O.W.C.A. Coin-mu sekarang {currentUser[4]}")
             beli = str(input("Mau beli apa? (monster/potion): "))

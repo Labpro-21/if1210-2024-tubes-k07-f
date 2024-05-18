@@ -1,5 +1,5 @@
 import time
-from csv import *
+from src.csv import *
 
 class LCG:
     def __init__(self, min_val, max_val):

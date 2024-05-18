@@ -19,6 +19,8 @@ from src.battle import *
 from src.arena import *
 from src.monster import *
 
+potion = [[1, "strength"], [2, "resilience"], [3, "healing"]]
+
 print("SELAMAT DATANG PADA PROGRAM YANG SEDANG DALAM PERCOBAAN INI!!!")
 while True:
     pilihan = input(">>> ")
@@ -35,7 +37,7 @@ while True:
     if pilihan.upper() == "SHOP":
         SHOP(currentUser, mShop, iShop, mons)
     if pilihan.upper() == "SHOP MANAGEMENT" :
-        SHOP_MANAGEMENT (currentUser, mShop, iShop, mons)
+        SHOP_MANAGEMENT (currentUser, mShop, iShop, mons, potion)
     if pilihan.upper() == "BATTLE" :
         BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel, iInv)
     if pilihan.upper() == "ARENA" :

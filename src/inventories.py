@@ -9,8 +9,8 @@ iInv = read_csv(item_inventory_filepath())
 
 
 def mInvList(invCount, currentUser, mInv, mons, mTemp):
-    for i in range(len(mInv)-1):
-        for j in range(len(mons)-1):
+    for i in range(len(mInv)):
+        for j in range(len(mons)):
             if str(mInv[i][0]) == str(currentUser[0]):
                 if str(mInv[i][1]) == str(mons[j][0]):
                     print(
