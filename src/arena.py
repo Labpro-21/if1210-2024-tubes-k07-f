@@ -8,6 +8,8 @@ from src.login import *
 from src.inventories import *
 from src.battle import *
 
+reward = [[1, 30], [2, 50], [3, 100], [4, 160], [5, 250]]
+
 def mInvList(invCount, currentUser, mInv, mons, mTemp):
     for i in range(len(mInv)):
         for j in range(len(mons)):
@@ -22,11 +24,9 @@ def mInvList(invCount, currentUser, mInv, mons, mTemp):
     return mTemp
 
 
-def yourTurnArena(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, damage_given, enemy_hpTemp):
+def yourTurnArena(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, damage_given):
     flee = False
     cancelPot = False
-    if enemy_hp <= 0 :
-        enemy_hp = enemy_hpTemp
     print(f"============ TURN {turnCnt} ({mons_type}) ============")
     print("1. Attack")
     print("2. Potion")
@@ -190,7 +190,7 @@ Level     : {level}""")
         lose = False
     return lose, hp, damage_received
 
-def ARENA (mons, mInv, rngEnemy, currentUser, rngLevel) :
+def ARENA (mons, mInv, rngEnemy, currentUser) :
     total_reward = 0
     damage_received = 0
     damage_given = 0
@@ -225,7 +225,6 @@ def ARENA (mons, mInv, rngEnemy, currentUser, rngLevel) :
     resilienceBool = False
     healingBool = False
     rngEnemy = rngEnemy(LCG, mons)
-    rngLevel = rngLevel(LCG)
     chosen = mons[rngEnemy]
 
     enemy_type = chosen[1]
@@ -261,9 +260,6 @@ HP        : {hp}
 Level     : {level}""")
 
     while stage <= 5 :
-        if stage > enemy [4] :
-            enemy[1], enemy[2], enemy[3] = monster (enemy[1], enemy[2], enemy[3], 2)
-        enemy [4] = stage
         print(f"============ STAGE {stage} ============")
   
         print("""
@@ -288,17 +284,13 @@ Level     : {level}""")
     DEF Power : {enemy[2]}
     HP        : {enemy[3]}
     Level     : {enemy[4]}""")
-        enemy_atk_power = enemy[1]
-        enemy_def_power = enemy[2]
-        enemy_hpTemp = enemy[3]
-        hpTemp = hp
         turnCnt = 1
         win = False
         lose = False
         currentPot = userPot (iInv)
         while (not win) and (not lose):
             atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancelPot, flee, damage_given = yourTurnArena(
-                mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, damage_given, enemy_hpTemp)
+                mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, damage_given)
 
             if not flee:
                 if not cancelPot:
@@ -315,19 +307,25 @@ Level     : {level}""")
                 break
 
         if win:
-            rewardOC = rngOC(LCG)
-            currentUser[4] += rewardOC
+            currentUser[4] += reward[stage-1][1]
+            total_reward += reward[stage-1][1]
             print(f"Selamat, Anda berhasil mengalahkan monster {enemy_type} !!!")
-            print(f"STAGE CLEARED! Anda akan mendapatkan {rewardOC} OC pada sesi ini! ")
+            print(f"STAGE CLEARED! Anda akan mendapatkan {reward[stage-1][1]} OC pada sesi ini! ")
             print ("Memulai stage berikutnya...")
             print()
-            total_reward += rewardOC
-            enemy [1] = enemy_atk_power
-            enemy [2] = enemy_def_power
-            enemy [3] = enemy_hpTemp
-            hp = hpTemp
             stage+=1
-
+            rngEnemy = rngEnemy(LCG, mons)
+            chosen = mons[rngEnemy]
+            enemy_type = chosen[1]
+            enemy_atk_power = (int(chosen[2]))
+            enemy_def_power = (int(chosen[3]))
+            enemy_hp = (int(chosen[4]))
+            enemy_level = int(stage)
+            enemy_atk_power, enemy_def_power, enemy_hp = monster(
+                enemy_atk_power, enemy_def_power, enemy_hp, enemy_level)
+            enemy = [enemy_type, enemy_atk_power,
+                    enemy_def_power, enemy_hp, enemy_level]
+        
         if lose:
             print(
                 f"Yahhh, Anda dikalahkan monster {enemy_type}. Jangan menyerah, coba lagi !!!")
@@ -344,6 +342,20 @@ Level     : {level}""")
     Damage diberikan : {damage_given}
     Damae diterima   : {damage_received}""")
     elif stage == 7 :
+        print ("============== STATS ==============")
+        print(f"""
+    Total Hadiah     : {total_reward}
+    Jumlah Stage     : {stage_akhir}
+    Damage diberikan : {damage_given}
+    Damage diterima   : {damage_received}""")
+    elif flee == True and stage == 1:
+        print ("============== STATS ==============")
+        print(f"""
+    Total Hadiah     : 0
+    Jumlah Stage     : 0
+    Damage diberikan : 0
+    Damage diterima   : 0""")
+    elif flee == True:
         print ("============== STATS ==============")
         print(f"""
     Total Hadiah     : {total_reward}

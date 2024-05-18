@@ -41,7 +41,7 @@ while True:
     if pilihan.upper() == "BATTLE" :
         BATTLE(mons, mInv, rngEnemy, currentUser, rngLevel, iInv)
     if pilihan.upper() == "ARENA" :
-        ARENA(mons, mInv, rngEnemy, currentUser, rngLevel)
+        ARENA(mons, mInv, rngEnemy, currentUser)
     if pilihan.upper() == "EXIT":
         break
 
