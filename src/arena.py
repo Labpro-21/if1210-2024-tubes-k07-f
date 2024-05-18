@@ -23,177 +23,11 @@ def mInvList(invCount, currentUser, mInv, mons, mTemp):
                     mTemp.append(stats)
     return mTemp
 
-
-def yourTurnArena(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, damage_given):
-    flee = False
-    cancelPot = False
-    print(f"============ TURN {turnCnt} ({mons_type}) ============")
-    print("1. Attack")
-    print("2. Potion")
-    print("3. Flee")
-    while True:
-        try:
-            command = (input("Pilih perintah: "))
-            command = int(command)
-            if (command) == 3:
-                print()
-                print("GAME OVER! Anda mengakhiri sesi latihan!")
-                flee = True  # keluar dari battle
-                break
-
-            elif (command) == 2:
-                if currentPot == [0, 0, 0]:
-                    print("Anda tidak memiliki potion dalam inventory!")
-                else:
-                    while True:
-                        type_potion = ""
-                        print()
-                        print("============ POTION LIST ============")
-                        print(
-                            f"1. Strength Potion (Qty: {currentPot[0]}) - Increases ATK Power")
-                        print(
-                            f"2. Resilience Potion (Qty: {currentPot[1]}) - Increases DEF Power")
-                        print(
-                            f"3. Healing Potion (Qty: {currentPot[2]}) - Restores Health")
-                        print("4. Cancel")
-                        print()
-
-                        potCommand = input("Pilih potion atau cancel: ")
-                        if int(potCommand) == 1:
-                            if strengthBool == True:
-                                print(
-                                    f"Kamu mencoba memberikan ramuan ini kepada {mons_type}, namun dia menolaknya seolah-olah dia memahami ramuan tersebut sudah tidak bermanfaat lagi.")
-                            elif currentPot[0] > 0:
-                                type_potion = "strength"
-                                print(
-                                    f"Setelah meminum ramuan ini, aura kekuatan terlihat mengelilingi {mons_type} dan gerakannya menjadi lebih cepat dan mematikan.")
-                                strengthBool = True
-                                currentPot = [currentPot[0]-1,
-                                              currentPot[1], currentPot[2]]
-                                break
-                            else:
-                                print(
-                                    "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
-                        elif int(potCommand) == 2:
-                            if resilienceBool == True:
-                                print(
-                                    f"Kamu mencoba memberikan ramuan ini kepada {mons_type}, namun dia menolaknya seolah-olah dia memahami ramuan tersebut sudah tidak bermanfaat lagi.")
-                            elif currentPot[1] > 0:
-                                type_potion = "resillence"
-                                print(
-                                    f"Setelah meminum ramuan ini, muncul sebuah energi pelindung di sekitar {mons_type} yang membuatnya terlihat semakin tangguh dan sulit dilukai.")
-                                resilienceBool = True
-                                currentPot = [currentPot[0],
-                                              currentPot[1]-1, currentPot[2]]
-                                break
-                            else:
-                                print(
-                                    "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
-                        elif int(potCommand) == 3:
-                            if healingBool == True:
-                                print(
-                                    f"Kamu mencoba memberikan ramuan ini kepada {mons_type}, namun dia menolaknya seolah-olah dia memahami ramuan tersebut sudah tidak bermanfaat lagi.")
-                            elif currentPot[2] > 0:
-                                type_potion = "healing"
-                                print(
-                                    f"Setelah meminum ramuan ini, luka-luka yang ada di dalam tubuh {mons_type} sembuh dengan cepat. Dalam sekejap, {mons_type} terlihat kembali prima dan siap melanjutkan pertempuran.")
-                                healingBool = True
-                                currentPot = [currentPot[0],
-                                              currentPot[1], currentPot[2]-1]
-                                break
-                            else:
-                                print(
-                                    "Wah, kamu sedang tidak memiliki ramuan ini, silahkan pilih ramuan lain!")
-                        elif int(potCommand) == 4:
-                            cancelPot = True
-                            break
-                        else:
-                            print(
-                                "Perintah tidak valid. Silahkan pilih perintah diatas!")
-                    if type_potion != "":
-                        atk_power, def_power, hp = potion(
-                            type_potion, atk_power, def_power, hp)
-                    print()
-                    break
-
-            elif (command) == 1:
-                print()
-                print(f"SCHWINKKK, {mons_type} menyerang {enemy_type} !!!")
-                tempAtk, percentage = playerAtk(LCG, atk_power)
-                damagecalc, tempAtk, defcalc = dmgCalc(
-                    tempAtk, enemy_def_power, enemy_hp, percentage)
-                enemy_hp = int(enemy_hp - damagecalc)
-                damage_given += damagecalc
-                if enemy_hp > 0 :
-                    print(f"""
-        Name      : {enemy_type}
-        ATK Power : {enemy_atk_power}
-        DEF Power : {enemy_def_power}
-        HP        : {enemy_hp}
-        Level     : {enemy_level}""")
-                else :
-                    print(f"""
-    Name      : {enemy_type}
-    ATK Power : {enemy_atk_power}
-    DEF Power : {enemy_def_power}
-    HP        : 0
-    Level     : {enemy_level}""")
-                print()
-                print(
-                    f"Penjelasan : ATT: {tempAtk} ({percentage}%), Reduced by: {defcalc} ({enemy_def_power}%), ATT Results: {int(damagecalc)}")
-                print()
-                break
-
-            else:
-                print("Masukkan perintah yang valid")
-        except ValueError:
-            print("Masukkan perintah yang valid!")
-            print()
-
-    if enemy_hp <= 0:
-        win = True
-    else:
-        win = False
-    return atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancelPot, flee, damage_given
-
-
-def enemyTurnArena(mons_type, atk_power, def_power, hp, level, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc, damage_received):
-    print(f"============ TURN {turnCnt} ({enemy_type}) ============")
-    print()
-    print(f"SCHWINKKK, {enemy_type} menyerang {mons_type} !!!")
-
-    tempAtk, percentage = enemyAtk(LCG, enemy_atk_power)
-    damagecalc, tempAtk, defcalc = dmgCalc(tempAtk, def_power, hp, percentage)
-    hp = int(hp - damagecalc)
-    damage_received += damagecalc
-    if hp > 0 :
-        print(f"""
-    Name      : {mons_type}
-    ATK Power : {int(atk_power)}
-    DEF Power : {int(def_power)}
-    HP        : {int(hp)}
-    Level     : {level}""")
-    else :
-        print(f"""
-Name      : {mons_type}
-ATK Power : {int(atk_power)}
-DEF Power : {int(def_power)}
-HP        : 0
-Level     : {level}""")
-    print()
-    print(
-        f"Penjelasan : ATT: {tempAtk} ({percentage}%), Reduced by: {defcalc} ({def_power}%), ATT Results: {int(damagecalc)}")
-    print()
-    if hp <= 0:
-        lose = True
-    else:
-        lose = False
-    return lose, hp, damage_received
-
 def ARENA (mons, mInv, rngEnemy, currentUser) :
     total_reward = 0
     damage_received = 0
     damage_given = 0
+    stage_done = 0
     print ("Selamat datang di Arena!!")
     print("============ MONSTER LIST ============")
     tempMons = []
@@ -289,13 +123,14 @@ Level     : {level}""")
         lose = False
         currentPot = userPot (iInv)
         while (not win) and (not lose):
-            atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancelPot, flee, damage_given = yourTurnArena(
+            atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancelPot, flee, damage_given = yourTurn
+        (
                 mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, damage_given)
 
             if not flee:
                 if not cancelPot:
                     if not win:
-                        lose, hp, damage_received = enemyTurnArena(mons_type, atk_power, def_power, hp, level, enemy_type,
+                        lose, hp, damage_received = enemyTurn(mons_type, atk_power, def_power, hp, level, enemy_type,
                                             enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc, damage_received)
                         turnCnt += 1
                     else:
@@ -314,6 +149,7 @@ Level     : {level}""")
             print ("Memulai stage berikutnya...")
             print()
             stage+=1
+            stage_done += 1
             rngEnemy = rngEnemy(LCG, mons)
             chosen = mons[rngEnemy]
             enemy_type = chosen[1]
@@ -330,7 +166,6 @@ Level     : {level}""")
             print(
                 f"Yahhh, Anda dikalahkan monster {enemy_type}. Jangan menyerah, coba lagi !!!")
             print (f"GAME OVER! Sesi latihan berakhir pada stage {stage}!")
-            stage_akhir = stage
             stage = 7
 
     if stage == 6 :
@@ -345,20 +180,14 @@ Level     : {level}""")
         print ("============== STATS ==============")
         print(f"""
     Total Hadiah     : {total_reward}
-    Jumlah Stage     : {stage_akhir}
+    Jumlah Stage     : {stage_done}
     Damage diberikan : {damage_given}
     Damage diterima   : {damage_received}""")
-    elif flee == True and stage == 1:
-        print ("============== STATS ==============")
-        print(f"""
-    Total Hadiah     : 0
-    Jumlah Stage     : 0
-    Damage diberikan : 0
-    Damage diterima   : 0""")
+        
     elif flee == True:
         print ("============== STATS ==============")
         print(f"""
     Total Hadiah     : {total_reward}
-    Jumlah Stage     : {stage_akhir}
+    Jumlah Stage     : {stage_done}
     Damage diberikan : {damage_given}
     Damage diterima   : {damage_received}""")
