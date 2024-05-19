@@ -1,5 +1,5 @@
 import time
-from csv import *
+
 
 def next_seed():
     return int(time.time())
@@ -25,7 +25,7 @@ def rngLevel(LCG):
 
 def rngEnemy(LCG, mons):
     m = 2**32
-    a = 51
+    a = 47
     c = 100
     min_val = 1
     max_val = len(mons)-1
@@ -78,5 +78,50 @@ def rngCapture(LCG, enemy_level):
 
     return capture
 
+def playerAtk(LCG, atk_power):
+    batas_bawah = atk_power * 70 / 100
+    batas_atas = atk_power * 130 / 100
+    m = 2**32
+    a = 82
+    c = 100
+    min_val = batas_bawah
+    max_val = batas_atas
+
+    seed = next_seed()
+    random_integer = LCG(min_val, max_val, seed, a, c, m)
+    rng = random_integer
+
+    percentage = rng / atk_power
+    if percentage < atk_power/100:
+        percentage = -((1 - percentage)*100)
+    elif percentage > atk_power/100:
+        percentage = (percentage - 1)*100
+    else:
+        percentage = 0
+    return rng, int(percentage)
+
+
+def enemyAtk(LCG, enemy_atk_power):
+    batas_bawah = enemy_atk_power * 70 / 100
+    batas_atas = (enemy_atk_power * 130 / 100)
+
+    m = 2**32
+    a = 62
+    c = 120
+    min_val = batas_bawah
+    max_val = batas_atas
+
+    seed = next_seed()
+    random_integer = LCG(min_val, max_val, seed, a, c, m)
+    rng = random_integer
+
+    percentage = rng / enemy_atk_power
+    if percentage < enemy_atk_power/100:
+        percentage = -((1 - percentage)*100)
+    elif percentage > enemy_atk_power/100:
+        percentage = (percentage - 1)*100
+    else:
+        percentage = 0
+    return rng, int(percentage)
 
 
