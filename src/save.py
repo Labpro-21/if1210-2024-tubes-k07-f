@@ -66,4 +66,3 @@ def save_data(userpas, mons, mShop, mInv, iShop, iInv):
         write_csv(folder_path, "item_inventory.csv", iInv)
         print("Data berhasil disimpan ke folder /data/" + folder_name)
 
-

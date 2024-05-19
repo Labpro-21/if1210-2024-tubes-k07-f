@@ -9,5 +9,4 @@ def monster(atk_power:int, def_power:int, hp:int, level:int):
 
     return int(atk_power), int(def_power), int(hp)
 
-#print(monster)
 
