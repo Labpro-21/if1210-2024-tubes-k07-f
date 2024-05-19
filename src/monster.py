@@ -11,8 +11,3 @@ def monster(atk_power:int, def_power:int, hp:int, level:int):
 
 #print(monster)
 
-def attack(x:int)
-    atk_power = random_number ((0.7 * atk_power)),(1.3* atk_power)
-return atk_power
-
-#gayakin bener :")

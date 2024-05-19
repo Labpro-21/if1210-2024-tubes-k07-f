@@ -1,4 +1,9 @@
-from src.login import *
+
+
+#{
+# login = bool
+# currentUser = array of string
+# }
 
 def LOGOUT(currentUser, login):
     if login:
@@ -10,6 +15,6 @@ def LOGOUT(currentUser, login):
         print("Anda belum login, silahkan login terlebih dahulu sebelum melakukan logout")
     print()
 
-    return login
+    return login, currentUser
 
 # LOGOUT(currentUser)

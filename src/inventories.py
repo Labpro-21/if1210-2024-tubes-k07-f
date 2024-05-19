@@ -2,6 +2,12 @@ from src.login import *  # MASIH PERLU DI FIX INVENTORY
 from src.battle import *
 import os
 
+#{
+# invCount = int
+# mTemp = array of string
+# iTemp = array of string
+# inventoryBool = bool}
+
 def mInvList(invCount, currentUser, mInv, mons, mTemp):
     for i in range(len(mInv)):
         for j in range(len(mons)):
@@ -58,47 +64,44 @@ def INVENTORY(currentUser, mInv, iInv, mons):
         while True:
             print("Masukkan pilihan sesuai angka diatas atau 'KELUAR'")
             pilihanInv = input(">> ")
-            try:
-                pilihanInv = int(pilihanInv)
-                if pilihanInv == 0:
-                    print()
-                elif invCount == 1 and pilihanInv > 1:
-                    print("Pilihan hanyalah 1 dan 'KELUAR'")
-                    print()
-                elif int(pilihanInv) > invCount:
-                    print(f"Pilihan hanyalah 1-{invCount} dan 'KELUAR'")
-                    print()
-                elif int(pilihanInv) <= int(len(mTemp)):
-                    for i in range(len(mTemp)):
-                        if int(pilihanInv) == mTemp[i][0]:
-                            print("Monster")
-                            print(f"Name      : {mTemp[i][1]}")
-                            print(f"ATK Power : {mTemp[i][2]}")
-                            print(f"Def Power : {mTemp[i][3]}")
-                            print(f"HP        : {mTemp[i][4]}")
-                            print(f"Level     : {mTemp[i][5]}")
-                            print()
-                            break
-                elif int(len(mTemp)) < int(pilihanInv) < int((len(mTemp))+(len(iTemp))):
-                    for i in range(len(iTemp)):
-                        if int(pilihanInv) == iTemp[i][0]:
-                            print("Potion")
-                            print(f"Type      : {iTemp[i][1]}")
-                            print(f"Quantity  : {iTemp[i][2]}")
-                            print()
-                            break
-                elif int(pilihanInv) == int((len(mTemp))+(len(iTemp))):
-                    for i in range(len(iTemp)):
-                        if int(pilihanInv) == iTemp[i][0]:
-                            print("Monster Ball")
-                            print(f"Quantity  : {iTemp[i][2]}")
-                            print()
-                            break
-            except ValueError:
-                if pilihanInv.upper() == "KELUAR":
-                    print()
-                    break
-                else:
-                    print()
+            if pilihanInv == 0:
+                print()
+            elif pilihanInv.upper() == "KELUAR":
+                print()
+                break
+            elif invCount == 1 and pilihanInv > 1:
+                print("Pilihan hanyalah 1 dan 'KELUAR'")
+                print()
+            elif int(pilihanInv) > invCount:
+                print(f"Pilihan hanyalah 1-{invCount} dan 'KELUAR'")
+                print()
+            elif int(pilihanInv) <= int(len(mTemp)):
+                for i in range(len(mTemp)):
+                    if int(pilihanInv) == mTemp[i][0]:
+                        print("Monster")
+                        print(f"Name      : {mTemp[i][1]}")
+                        print(f"ATK Power : {mTemp[i][2]}")
+                        print(f"Def Power : {mTemp[i][3]}")
+                        print(f"HP        : {mTemp[i][4]}")
+                        print(f"Level     : {mTemp[i][5]}")
+                        print()
+                        break
+            elif int(len(mTemp)) < int(pilihanInv) < int((len(mTemp))+(len(iTemp))):
+                for i in range(len(iTemp)):
+                    if int(pilihanInv) == iTemp[i][0]:
+                        print("Potion")
+                        print(f"Type      : {iTemp[i][1]}")
+                        print(f"Quantity  : {iTemp[i][2]}")
+                        print()
+                        break
+            elif int(pilihanInv) == int((len(mTemp))+(len(iTemp))):
+                for i in range(len(iTemp)):
+                    if int(pilihanInv) == iTemp[i][0]:
+                        print("Monster Ball")
+                        print(f"Quantity  : {iTemp[i][2]}")
+                        print()
+                        break
+            else:
+                print()
 
 # INVENTORY(currentUser, mInv, iInv, mons)

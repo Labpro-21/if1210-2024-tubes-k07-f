@@ -1,4 +1,4 @@
-from src.csv import *
+
 
 ###{KAMUS DATA
 # role = str
@@ -42,7 +42,7 @@ def isUsernameExist(username, userpas): # if the username already exist in the d
     return (valid)
 
 
-def REGISTER():
+def REGISTER(userpas, mInv):
     role = 'agent' # starting role
     oc = 0 # starting OC
 
