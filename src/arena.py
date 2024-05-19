@@ -1,10 +1,9 @@
 import os
 
+from src.isInteger import *
 from src.potion import *
 from src.monster import *
 from src.rng import *
-from src.login import *
-from src.inventories import *
 from src.battle import *
 
 reward = [[1, 30], [2, 50], [3, 100], [4, 160], [5, 250]]
@@ -49,7 +48,7 @@ def ARENA(mons, mInv, rngEnemy, currentUser, iInv):
     for i in range(len(userMons)):
         print(f"{i+1}. {userMons[i][0]}")
 
-    currentMons = chooseMons(userMons)
+    currentMons = chooseMons(userMons, is_integer)
     mons_type = currentMons[0]
     atk_power = currentMons[1]
     def_power = currentMons[2]
@@ -115,11 +114,13 @@ Level     : {level}""")
         turnCnt = 1
         win = False
         lose = False
+        cancel = False
+        flee = False
         currentPot, strengthIndex, resilienceIndex, healingIndex = userPot(
             iInv, currentUser)
         while (not win) and (not lose):
             atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancel, flee, end, iInv, damage_given = yourTurn(
-                mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv, mInv, currentUser)
+                mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv, mInv, currentUser, is_integer, win, lose, cancel, flee)
 
             if not flee:
                 if not cancel:

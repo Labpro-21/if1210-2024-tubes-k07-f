@@ -6,6 +6,7 @@ import math
 import argparse
 import datetime
 
+from src.isInteger import *
 from src.save import *
 from src.load import *
 from src.rng import *
@@ -25,18 +26,8 @@ from src.laboratory import *
 from src.save import *
 from src.load import *
 
-# Fungsi validasi input berbentuk integer atau tidak
-def is_integer(input):
-    is_integer = True
-    for char in input:
-        # Mengecek input menggunakan ascii number (0-9 : 48-57)
-        if not (48 <= ord(char) <= 57):
-            is_integer = False
-    return is_integer
 
 userpas, mons, iInv, mInv, iShop, mShop, valid_load = start()
-print("Selamat datang di program OWCA!")
-print("Ketik HELP untuk memunculkan bantuan dari The Mighty God.")
 print()
 
 login = False
@@ -49,7 +40,7 @@ while True:
                 f"Anda telah login dengan username {currentUser[1]}, silahkan lakukan “LOGOUT” sebelum melakukan register.")
             print()
         else:
-            REGISTER(userpas, mInv)
+            REGISTER(userpas, mInv, is_integer)
             print()
     if pilihan.upper() == "LOGIN":
         if login:
@@ -65,7 +56,7 @@ while True:
         HELP(currentUser)
     if pilihan.upper() == "INVENTORY":
         if login:
-            INVENTORY(currentUser, mInv, iInv, mons)
+            INVENTORY(currentUser, mInv, iInv, mons, is_integer)
         else:
             print("Anda belum login. Silahkan login terlebih dahulu..")
             print()
@@ -115,7 +106,7 @@ while True:
             print()
     if pilihan.upper() == "LABORATORY":
         if login:
-            LABORATORY(userpas, mInv, mons, currentUser)
+            LABORATORY(userpas, mInv, mons, currentUser, is_integer)
             print()
         else:
             print("Anda belum login. Silahkan login terlebih dahulu..")

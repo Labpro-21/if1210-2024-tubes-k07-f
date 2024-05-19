@@ -1,4 +1,4 @@
-
+from src.isInteger import *
 
 ###{KAMUS DATA
 # role = str
@@ -42,7 +42,7 @@ def isUsernameExist(username, userpas): # if the username already exist in the d
     return (valid)
 
 
-def REGISTER(userpas, mInv):
+def REGISTER(userpas, mInv, is_integer):
     role = 'agent' # starting role
     oc = 0 # starting OC
 
@@ -84,14 +84,23 @@ def REGISTER(userpas, mInv):
     print("4. Zuko")
     print("5. Chacha")
     print()
-    angkaMonster = int(input("Monster pilihanmu: "))
-    monster = monsterAwal[angkaMonster-1] # chosen monster
+    while True:
+        angkaMonster = (input("Monster pilihanmu: "))
+        if is_integer(angkaMonster):
+            angkaMonster = int(angkaMonster)
+            if angkaMonster > 5:
+                print("Masukkan angka yang valid!!")
+            else:
+                monster = monsterAwal[angkaMonster-1] # chosen monster
 
-    print(
-        f"Selamat datang Agent {username}. Mari kita mengalahkan Dr. Asep Spakbor dengan {monster}!")
+                print(
+                    f"Selamat datang Agent {username}. Mari kita mengalahkan Dr. Asep Spakbor dengan {monster}!")
 
-    tempMInv = [int(cnt), int(angkaMonster), 1]
-    mInv.append(tempMInv) # adding new monster to monster_inventory database
-    cnt += 1 # increase cnt as you add this account
+                tempMInv = [int(cnt), int(angkaMonster), 1]
+                mInv.append(tempMInv) # adding new monster to monster_inventory database
+                cnt += 1 # increase cnt as you add this account
+                break
+        else:
+            print("Masukkan angka yang valid!!")
 
 # REGISTER(cnt)
