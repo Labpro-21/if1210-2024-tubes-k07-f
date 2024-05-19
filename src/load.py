@@ -22,13 +22,16 @@ def read_csv(filename, folder_path):
         for line in file:
             row = []
             cell = ""
-            for char in line.strip():
+            for char in line:
+                if char == '\n' or char == '\r':
+                    continue
                 if char == ';':
                     row.append(cell)
                     cell = ""
                 else:
                     cell += char
-            row.append(cell)  # Append the last cell
+            if cell:
+                row.append(cell)  # Append the last cell
             data.append(row)
 
     return data

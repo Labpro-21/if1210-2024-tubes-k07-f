@@ -34,11 +34,13 @@ def cekMonster (mShop, mInv, id_monster, currentUser):
             return True
     return False
 
-def cekItem (iShop, iInv, id_potion, currentUser):
-    for i in (1, len(iInv)-1) :
-        if iShop [id_potion][0] == iInv [i][1] and int(currentUser[0]) == int(iInv [i][0]):
-            return False
-    return True
+def cekItem (iShop, iInv, id_item, currentUser):
+    Bool = True
+    for i in range (1, len(iInv)-1) :
+        if str(iShop [id_item][0]) == str(iInv [i][1] ) and int(currentUser[0]) == int(iInv [i][0]):
+            Bool = False
+    return Bool
+    
 
 def SHOP (currentUser, mShop, iShop, mons, mInv, iInv) :
     aksi = "lihat"
@@ -49,17 +51,17 @@ def SHOP (currentUser, mShop, iShop, mons, mInv, iInv) :
     while aksi != "keluar" :
         aksi = str(input("Pilih aksi (lihat/beli/keluar): "))
         if aksi == "lihat" :
-            jenis = str(input("Mau lihat apa? (monster/potion): "))
+            jenis = str(input("Mau lihat apa? (monster/item): "))
             print()
             if jenis == "monster" :
                 mShopList(shopCount, currentUser, mShop, mons, msTemp)
-            elif jenis == "potion" :
+            elif jenis == "item" :
                 iShopList(shopCount, currentUser, iShop, isTemp)
             print()
         elif aksi == "beli" :
             print (f"Jumlah O.W.C.A. Coin-mu sekarang {currentUser[4]}")
             print ()
-            beli = str(input("Mau beli apa? (monster/potion): "))
+            beli = str(input("Mau beli apa? (monster/item): "))
             if beli == "monster" :
                 id_monster = int(input("Masukkan id monster: "))
                 if id_monster > (len(mShop)-1) : 
@@ -82,34 +84,37 @@ def SHOP (currentUser, mShop, iShop, mons, mInv, iInv) :
                         mons_to_inv = [currentUser [0], mons[int(mShop[id_monster][0])][0], 1]
                         mInv.append (mons_to_inv)
             
-            elif beli == "potion" :
-                id_potion = int(input("Masukkan id potion: "))
-                jumlah_potion = int(input("Masukkan jumlah potion: "))
-                if id_potion > len(iShop)-1 : 
+            elif beli == "item" :
+                id_item = int(input("Masukkan id item: "))
+                jumlah_item = int(input("Masukkan jumlah item: "))
+                if id_item > len(iShop)-1 : 
                     print ("Pilihan item tidak valid.")
                     print ()
                 else :
-                    if int(iShop [id_potion][1]) < jumlah_potion :
+                    itemCek = cekItem (iShop, iInv, id_item, currentUser) 
+                    if int(iShop [id_item][1]) < jumlah_item :
                         print ("Pembelian gagal, stok item kurang.")
                         print ()
-                    elif int(iShop [id_potion][2])*jumlah_potion > currentUser[4] :
+                    elif int(iShop [id_item][2])*jumlah_item > currentUser[4] :
                         print ("OC-mu tidak cukup.")
                         print ()
-                    elif cekItem (iShop, iInv, id_potion, currentUser) :
-                        print(f"Berhasil membeli item: {jumlah_potion} {iShop [id_potion][0]}. Item sudah masuk ke inventory-mu!")
+                    elif itemCek:
+                        print(f"Berhasil membeli item: {jumlah_item} {iShop [id_item][0]}. Item sudah masuk ke inventory-mu!")
                         print()
-                        currentUser [4] -= int(iShop [id_potion][2])*jumlah_potion
-                        iShop [id_potion][1] = int(iShop [id_potion][1]) - jumlah_potion
-                        item_to_inv = [currentUser[0], iShop [id_potion][0], jumlah_potion]
+                        currentUser [4] -= int(iShop [id_item][2])*jumlah_item
+                        iShop [id_item][1] = int(iShop [id_item][1]) - jumlah_item
+                        item_to_inv = [currentUser[0], iShop [id_item][0], jumlah_item]
                         iInv.append (item_to_inv)
                         isTemp.clear()
                     else :
-                        print(f"Berhasil membeli item: {jumlah_potion} {iShop [id_potion][0]}. Item sudah masuk ke inventory-mu!")
+                        print(f"Berhasil membeli item: {jumlah_item} {iShop [id_item][0]}. Item sudah masuk ke inventory-mu!")
                         print()
-                        currentUser [4] -= int(iShop [id_potion][2])*jumlah_potion
-                        iShop [id_potion][1] = int(iShop [id_potion][1]) - jumlah_potion
+                        currentUser [4] -= int(iShop [id_item][2])*jumlah_item
+                        iShop [id_item][1] = int(iShop [id_item][1]) - jumlah_item
                         for i in range (len(iInv)) :
-                            if iShop [id_potion] == iInv [i][1] :
-                                iInv [i][2] += jumlah_potion
+                            if str(currentUser[0]) == str(iInv[i][0]):
+                                if iShop [id_item][0] == iInv [i][1] :
+                                    iInv[i][2] = int(iInv[i][2])
+                                    iInv[i][2] += jumlah_item
 
     print("Mr. Yanto bilang makasih, belanja lagi ya nanti!!!")

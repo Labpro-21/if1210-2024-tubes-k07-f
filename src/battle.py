@@ -4,6 +4,7 @@ from src.potion import *
 from src.monster import *
 from src.rng import *
 
+
 def chooseMons(userMons):
     while True:
         choice = (input("Pilih monster untuk bertarung: "))
@@ -17,7 +18,7 @@ def chooseMons(userMons):
             for i in range(len(userMons)):
                 if choice == i+1:
                     currentMons = [userMons[i][0], userMons[i][1],
-                                    userMons[i][2], userMons[i][3], userMons[i][4]]
+                                   userMons[i][2], userMons[i][3], userMons[i][4]]
                     break
             break
     return (currentMons)
@@ -44,6 +45,7 @@ def userPot(iInv, currentUser):
     currentPot = [strength, resilience, healing]
     return (currentPot, strengthIndex, resilienceIndex, healingIndex)
 
+
 def userBall(iInv):
     monsterBall = 0
     for i in range(1, len(iInv)):
@@ -58,6 +60,7 @@ def dmgCalc(tempAtk, enemy_def_power, enemy_hp, percentage):
     defcalc = enemy_def_power/100 * tempAtk
     damagecalc = tempAtk - defcalc
     return damagecalc, tempAtk, defcalc
+
 
 def monsterCapture(userBall, userMons, iInv, rngCapture, mInv, enemy_type, currentUser, chosenEnemy, enemy_level, enemy_atk_power, enemy_def_power, enemy_hp):
     end = False
@@ -77,9 +80,10 @@ def monsterCapture(userBall, userMons, iInv, rngCapture, mInv, enemy_type, curre
         iInv[ballIndex][2] = int(iInv[ballIndex][2])
         iInv[ballIndex][2] -= 1
         print("Swoosshhhhh, Anda mengeluarkan Monster Ball !!!")
-        capture = rngCapture(LCG,enemy_level)
+        capture = rngCapture(LCG, enemy_level)
         if capture:
-            print(f"Selamat, Anda berhasil mendapatkan monster {enemy_type} !!!")
+            print(
+                f"Selamat, Anda berhasil mendapatkan monster {enemy_type} !!!")
             mInv.append([currentUser[0], chosenEnemy[0], enemy_level])
             end = True
 
@@ -93,13 +97,15 @@ Level     : {enemy_level}""")
             print(f"Sisa Monster Ball Anda: {monsterBall}")
             print()
         else:
-            print(f"Yahhh, Anda belum berhasil mendapatkan monster {enemy_type} !!!")
+            print(
+                f"Yahhh, Anda belum berhasil mendapatkan monster {enemy_type} !!!")
             print()
             print(f"Sisa Monster Ball Anda: {monsterBall}")
             print()
     else:
         print("Anda tidak memiliki Monster Ball dalam inventory!")
     return end, cancel
+
 
 def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv):
     end = False
@@ -115,7 +121,7 @@ def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, 
         else:
             print("1. Attack")
             print("2. Use Potion")
-            print("3. Quit")        
+            print("3. Quit")
         command = (input("Pilih perintah: "))
         command = int(command)
         if (command) == 4:
@@ -131,7 +137,8 @@ def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, 
             print()
 
             if ballPresence:
-                end, cancel = monsterCapture(userBall, userMons, iInv, rngCapture, mInv, enemy_type, currentUser, chosenEnemy, enemy_level, enemy_atk_power, enemy_def_power, enemy_hp)
+                end, cancel = monsterCapture(userBall, userMons, iInv, rngCapture, mInv, enemy_type,
+                                             currentUser, chosenEnemy, enemy_level, enemy_atk_power, enemy_def_power, enemy_hp)
                 if cancel or end:
                     break
             else:
@@ -167,8 +174,9 @@ def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, 
                                 f"Setelah meminum ramuan ini, aura kekuatan terlihat mengelilingi {mons_type} dan gerakannya menjadi lebih cepat dan mematikan.")
                             strengthBool = True
                             currentPot = [currentPot[0]-1,
-                                            currentPot[1], currentPot[2]]
-                            iInv[strengthIndex][2] = int(iInv[strengthIndex][2])
+                                          currentPot[1], currentPot[2]]
+                            iInv[strengthIndex][2] = int(
+                                iInv[strengthIndex][2])
                             iInv[strengthIndex][2] -= 1
                             break
                         else:
@@ -184,8 +192,9 @@ def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, 
                                 f"Setelah meminum ramuan ini, muncul sebuah energi pelindung di sekitar {mons_type} yang membuatnya terlihat semakin tangguh dan sulit dilukai.")
                             resilienceBool = True
                             currentPot = [currentPot[0],
-                                            currentPot[1]-1, currentPot[2]]
-                            iInv[resilienceIndex][2] = int(iInv[resilienceIndex][2])
+                                          currentPot[1]-1, currentPot[2]]
+                            iInv[resilienceIndex][2] = int(
+                                iInv[resilienceIndex][2])
                             iInv[resilienceIndex][2] -= 1
                             break
                         else:
@@ -201,7 +210,7 @@ def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, 
                                 f"Setelah meminum ramuan ini, luka-luka yang ada di dalam tubuh {mons_type} sembuh dengan cepat. Dalam sekejap, {mons_type} terlihat kembali prima dan siap melanjutkan pertempuran.")
                             healingBool = True
                             currentPot = [currentPot[0],
-                                            currentPot[1], currentPot[2]-1]
+                                          currentPot[1], currentPot[2]-1]
                             iInv[healingIndex][2] = int(iInv[healingIndex][2])
                             iInv[healingIndex][2] -= 1
                             break
@@ -248,6 +257,7 @@ Level     : {enemy_level}""")
 
     if enemy_hp <= 0:
         win = True
+        enemy_hp = 0
     else:
         win = False
     return atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancel, flee, end, iInv, damage_given
@@ -263,14 +273,14 @@ def enemyTurn(mons_type, atk_power, def_power, hp, level, enemy_type, enemy_atk_
     hp = int(hp - damagecalc)
     damage_received += damagecalc
 
-    if hp > 0 :
+    if hp > 0:
         print(f"""
 Name      : {mons_type}
 ATK Power : {int(atk_power)}
 DEF Power : {int(def_power)}
 HP        : {int(hp)}
 Level     : {level}""")
-    else :
+    else:
         print(f"""
 Name      : {mons_type}
 ATK Power : {int(atk_power)}
@@ -382,7 +392,8 @@ Level     : {level}""")
     turnCnt = 1
     win = False
     lose = False
-    currentPot, strengthIndex, resilienceIndex, healingIndex = userPot(iInv, currentUser)
+    currentPot, strengthIndex, resilienceIndex, healingIndex = userPot(
+        iInv, currentUser)
     while (not win) and (not lose):
         atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancel, flee, end, iInv, damage_given = yourTurn(
             mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv)
@@ -392,7 +403,7 @@ Level     : {level}""")
                 if not cancel:
                     if not win:
                         lose, hp, damage_received = enemyTurn(mons_type, atk_power, def_power, hp, level, enemy_type,
-                                            enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc, damage_received)
+                                                              enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, turnCnt, dmgCalc, damage_received)
                         turnCnt += 1
                     else:
                         break
