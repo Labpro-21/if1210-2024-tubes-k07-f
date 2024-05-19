@@ -46,7 +46,7 @@ def userPot(iInv, currentUser):
     return (currentPot, strengthIndex, resilienceIndex, healingIndex)
 
 
-def userBall(iInv):
+def userBall(iInv, currentUser):
     monsterBall = 0
     for i in range(1, len(iInv)):
         if int(iInv[i][0]) == int(currentUser[0]):
@@ -65,7 +65,7 @@ def dmgCalc(tempAtk, enemy_def_power, enemy_hp, percentage):
 def monsterCapture(userBall, userMons, iInv, rngCapture, mInv, enemy_type, currentUser, chosenEnemy, enemy_level, enemy_atk_power, enemy_def_power, enemy_hp):
     end = False
     cancel = False
-    monsterBall, ballIndex = userBall(iInv)
+    monsterBall, ballIndex = userBall(iInv, currentUser)
     alreadyHaveMons = False
     for i in range(len(userMons)):
         if enemy_type == userMons[i][0]:
@@ -107,7 +107,7 @@ Level     : {enemy_level}""")
     return end, cancel
 
 
-def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv):
+def yourTurn(mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv, mInv, currentUser):
     end = False
     flee = False
     cancel = False
@@ -319,19 +319,11 @@ def BATTLE(mons, mInv, iInv, rngEnemy, currentUser, rngLevel, userpas):
     enemy = [enemy_type, enemy_atk_power,
              enemy_def_power, enemy_hp, enemy_level]
     print("""
-        _/\----/\   
-        /         \     /\
-      
-      |  O    O   |   |  |
-      |  .vvvvv.  |   |  |
-      /  |     |   \  |  |
-      /   `^^^^^'    \ |  |
-    ./  /|            \|  |_
-  /   / |         |\__     /
-  \  /  |         |   |__|
-    `'   |  _      |
-      _.-'-' `-'-'.'_
-__.-'               '-.__""")
+("`-''-/").___..--''"`-._ 
+ `6_ 6  )   `-.  (     ).`-.__.`) 
+ (_Y_.)'  ._   )  `._ `. ``-..-' 
+   _..`--'_..-_/  /--'_.'
+  ((((.-''  ((((.'  (((.-'""")
 
     print(f"RAWRRR, Monster {enemy[0]} telah muncul !!!")
     print(f"""
@@ -368,17 +360,16 @@ Level     : {enemy_level}""")
     atk_power, def_power, hp = monster(atk_power, def_power, hp, level)
 
     print("""          
-    /\----/\_   
-   /         \  /|
-  |  | O    O | / |
-  |  | .vvvvv.|/  /
-  /   | |     |   /
-/    | `^^^^^   /
-| /|  |         /
-/ |    ___    |
-    \  |   |   |
-    |  |   |   |
-    \._\   \._\ 
+           ."`".
+       .-./ _=_ \.-.
+      {  (,(oYo),) }}
+      {{ |   "   |} }
+      { { \(---)/  }}
+      {{  }'-=-'{ } }
+      { { }._:_.{  }}
+      {{  } -:- { } }
+      {_{ }`===`{  _}
+     ((((\)     (/))))
 """)
     print(
         f"RAWRRR, Agent {currentUser[1]} mengeluarkan monster {mons_type} !!!")
@@ -396,7 +387,7 @@ Level     : {level}""")
         iInv, currentUser)
     while (not win) and (not lose):
         atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancel, flee, end, iInv, damage_given = yourTurn(
-            mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv)
+            mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv, mInv, currentUser)
 
         if not flee:
             if not end:

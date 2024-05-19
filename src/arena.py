@@ -74,17 +74,16 @@ def ARENA(mons, mInv, rngEnemy, currentUser, iInv):
              enemy_def_power, enemy_hp, enemy_level]
 
     print("""          
-    /\----/\_   
-   /         \  /|
-  |  | O    O | / |
-  |  | .vvvvv.|/  /
-  /   | |     |   /
-/    | `^^^^^   /
-| /|  |         /
-/ |    ___    |
-    \  |   |   |
-    |  |   |   |
-    \._\   \._\ 
+           ."`".
+       .-./ _=_ \.-.
+      {  (,(oYo),) }}
+      {{ |   "   |} }
+      { { \(---)/  }}
+      {{  }'-=-'{ } }
+      { { }._:_.{  }}
+      {{  } -:- { } }
+      {_{ }`===`{  _}
+     ((((\)     (/))))
 """)
     print(
         f"RAWRRR, Agent {currentUser[1]} mengeluarkan monster {mons_type} !!!")
@@ -100,19 +99,11 @@ Level     : {level}""")
         print(f"============ STAGE {stage} ============")
 
         print("""
-            _/\----/\   
-            /         \     /\
-        
-        |  O    O   |   |  |
-        |  .vvvvv.  |   |  |
-        /  |     |   \  |  |
-        /   `^^^^^'    \ |  |
-        ./  /|            \|  |_
-    /   / |         |\__     /
-    \  /  |         |   |__|
-        `'   |  _      |
-        _.-'-' `-'-'.'_
-    __.-'               '-.__""")
+("`-''-/").___..--''"`-._ 
+ `6_ 6  )   `-.  (     ).`-.__.`) 
+ (_Y_.)'  ._   )  `._ `. ``-..-' 
+   _..`--'_..-_/  /--'_.'
+  ((((.-''  ((((.'  (((.-'""")
 
         print(f"RAWRRR, Monster {enemy[0]} telah muncul !!!")
         print(f"""
@@ -128,7 +119,7 @@ Level     : {level}""")
             iInv, currentUser)
         while (not win) and (not lose):
             atk_power, def_power, hp, enemy_hp, win, currentPot, strengthBool, resilienceBool, healingBool, cancel, flee, end, iInv, damage_given = yourTurn(
-                mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv)
+                mons_type, atk_power, def_power, hp, strengthBool, resilienceBool, healingBool, turnCnt, currentPot, strengthIndex, resilienceIndex, healingIndex, enemy_type, enemy_atk_power, enemy_def_power, enemy_hp, enemy_level, dmgCalc, chosenEnemy, userBall, userMons, ballPresence, damage_given, iInv, mInv, currentUser)
 
             if not flee:
                 if not cancel:

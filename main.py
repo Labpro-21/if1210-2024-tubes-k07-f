@@ -38,7 +38,7 @@ userpas, mons, iInv, mInv, iShop, mShop, valid_load = start()
 print("Selamat datang di program OWCA!")
 print("Ketik HELP untuk memunculkan bantuan dari The Mighty God.")
 print()
-print(mShop)
+
 login = False
 while True:
     pilihan = input(">>> ")
