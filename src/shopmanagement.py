@@ -58,7 +58,7 @@ def iShopList(shopCount, iShop, isTemp):
 
 
 def notiShopList(shopCount, iShop, nisTemp, item):
-    if len(iShop) == len(item):
+    if (len(iShop)-1) == (len(item)):
         print("Semua item tersedia di shop.")
         print()
         Bool = False
@@ -66,7 +66,7 @@ def notiShopList(shopCount, iShop, nisTemp, item):
         processed_ids = set()
         shopCount = len(iShop) - 1
         print("ID | Type                |")
-        for i in range(1, len(item)):
+        for i in range(len(item)):
             is_in_shop = False
             for j in range(1, len(iShop)):
                 if item[i][1] == iShop[j][0]:
@@ -85,7 +85,7 @@ def notiShopList(shopCount, iShop, nisTemp, item):
 
 
 def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
-    item = [[1, "strength"], [2, "resilience"], [3, "healing"], [4, "monster_ball"], [1,1]]
+    item = [[1, "strength"], [2, "resilience"], [3, "healing"], [4, "monster_ball"]]
     action = "lihat"
     shopCount = 0
     id_mons_to_shop = 0
@@ -174,7 +174,7 @@ def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
                         print("Input harus berupa integer.")
                         print()
                 else:
-                    print()
+                    pass
 
         elif action == "ubah":
             jenis_ubah = str(input(">>> Mau ubah apa? (monster/item): "))
@@ -297,7 +297,9 @@ def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
                         for i in range(len(iShop)):
                             if iShop[i][0] == selectedPot:
                                 iShop.pop(id_pot_delete)
+                                break
                         print(f"Item telah berhasil dihapus dari shop!")
+                        print(iShop)
                         print()
                     elif pot_confirm == "n":
                         print(f"Gagal menghapus {selectedPot} dari shop")
@@ -305,3 +307,5 @@ def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
                 else:
                     print("Input harus berupa integer.")
                     print()
+        elif action.lower() == "keluar":
+            print("Anda keluar dari shop management.")
