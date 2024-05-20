@@ -85,13 +85,11 @@ Pada laboratory, pemain dapat upgrade monster yang dimilikinya dengan harga yang
 Hanya admin yang bisa mengakses perintah ini. Pada monster, admin dapat memanage monster yang ada pada game dengan menambahkan monster disertai attack, def (maks 50), dan hp.
 
 10. SHOP: 
-Bila shop diakses admin, admin dapat melakukan shop management. Pada shop management, admin dapat menambahkan monster/item yang belum ada pada shop, mengubah harga dan/atau stok dari monster/item, dan juga menghapus monster/item yang sudah ada di shop. 
-
-  Bila shop diakses agent, agent dapat membeli monster atau potion yang sudah ada di shop. Setiap barang memiliki harga dan dapat dibeli bila stoknya mencukupi.
+Bila shop diakses admin, admin dapat melakukan shop management. Pada shop management, admin dapat menambahkan monster/item yang belum ada pada shop, mengubah harga dan/atau stok dari monster/item, dan juga menghapus monster/item yang sudah ada di shop. Bila shop diakses agent, agent dapat membeli monster atau potion yang sudah ada di shop. Setiap barang memiliki harga dan dapat dibeli bila stoknya mencukupi.
 
 11. SAVE: 
 Pada save, pemain bisa melakukan save dari semua progres yang telah dilakukan. Bila belum ada folder sesuai nama yang di input, folder tersebut akan dibuat.
 Bila sudah ada foldernya, data pada folder akan dioverwrite dengan progres
 
-12. EXIT
+12. EXIT: 
 Pada exit, pemain dapat keluar dari game dengan peringatan untuk save.
