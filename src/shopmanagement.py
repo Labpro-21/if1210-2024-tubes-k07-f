@@ -117,21 +117,25 @@ def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
                     shopCount, mShop, mons, nmsTemp)
                 if Bool:
                     id_mons = (input(">>> Masukkan id monster: "))
-                    if is_integer(id_mons):
-                        id_mons = int(id_mons)
-                        stok_mons = (input(">>> Masukkan stok awal: "))
-                        if is_integer(stok_mons):
-                            stok_mons = int(stok_mons)
-                            price_mons = (input(">>> Masukkan harga: "))
-                            if is_integer(price_mons):
-                                price_mons = int(price_mons)
-                                print(
-                                    f"{nmsTemp [id_mons-len(mShop)][1]} telah berhasil ditambahkan ke dalam shop! ")
-                                print()
-                                mons_to_shop.append(id_mons_to_shop)
-                                mons_to_shop.append(stok_mons)
-                                mons_to_shop.append(price_mons)
-                                mShop.append(mons_to_shop)
+                    if id_mons != "":
+                        if is_integer(id_mons):
+                            id_mons = int(id_mons)
+                            stok_mons = (input(">>> Masukkan stok awal: "))
+                            if is_integer(stok_mons):
+                                stok_mons = int(stok_mons)
+                                price_mons = (input(">>> Masukkan harga: "))
+                                if is_integer(price_mons):
+                                    price_mons = int(price_mons)
+                                    print(
+                                        f"{nmsTemp [id_mons-len(mShop)][1]} telah berhasil ditambahkan ke dalam shop! ")
+                                    print()
+                                    mons_to_shop.append(id_mons_to_shop)
+                                    mons_to_shop.append(stok_mons)
+                                    mons_to_shop.append(price_mons)
+                                    mShop.append(mons_to_shop)
+                                else:
+                                    print("Input harus berupa integer.")
+                                    print()
                             else:
                                 print("Input harus berupa integer.")
                                 print()
@@ -139,7 +143,7 @@ def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
                             print("Input harus berupa integer.")
                             print()
                     else:
-                        print("Input harus berupa integer.")
+                        print("ID monster harus berupa integer!!")
                         print()
                 else:
                     print()
@@ -149,21 +153,25 @@ def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
                     shopCount, iShop, nisTemp, item)
                 if Bool:
                     id_pot = (input(">>> Masukkan id item: "))
-                    if is_integer(id_pot):
-                        id_pot = int(id_pot)
-                        stok_pot = (input(">>> Masukkan stok awal: "))
-                        if is_integer(stok_pot):
-                            stok_pot = int(stok_pot)
-                            price_pot = (input(">>> Masukkan harga: "))
-                            if is_integer(price_pot):
-                                price_pot = int(price_pot)
-                                print(
-                                    f"{nisTemp [id_pot-len(iShop)][1]} telah berhasil ditambahkan ke dalam shop! ")
-                                print()
-                                item_to_shop.append(nisTemp[id_pot-len(iShop)][1])
-                                item_to_shop.append(stok_pot)
-                                item_to_shop.append(price_pot)
-                                iShop.append(item_to_shop)
+                    if id_pot != "":
+                        if is_integer(id_pot):
+                            id_pot = int(id_pot)
+                            stok_pot = (input(">>> Masukkan stok awal: "))
+                            if is_integer(stok_pot):
+                                stok_pot = int(stok_pot)
+                                price_pot = (input(">>> Masukkan harga: "))
+                                if is_integer(price_pot):
+                                    price_pot = int(price_pot)
+                                    print(
+                                        f"{nisTemp [id_pot-len(iShop)][1]} telah berhasil ditambahkan ke dalam shop! ")
+                                    print()
+                                    item_to_shop.append(nisTemp[id_pot-len(iShop)][1])
+                                    item_to_shop.append(stok_pot)
+                                    item_to_shop.append(price_pot)
+                                    iShop.append(item_to_shop)
+                                else:
+                                    print("Input harus berupa integer.")
+                                    print()
                             else:
                                 print("Input harus berupa integer.")
                                 print()
@@ -171,7 +179,7 @@ def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
                             print("Input harus berupa integer.")
                             print()
                     else:
-                        print("Input harus berupa integer.")
+                        print("ID item harus berupa integer!!")
                         print()
                 else:
                     pass
@@ -185,29 +193,34 @@ def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
                 if is_integer(id_mons_new):
                     id_mons_new = int(id_mons_new)
                     stok_mons_new = input(">>> Masukkan stok baru: ")
-                    if is_integer(stok_mons_new):
-                        stok_mons_new = int(stok_mons_new)
+                    if is_integer(stok_mons_new) or stok_mons_new == "":
                         price_mons_new = input(">>> Masukkan harga baru: ")
-                        if is_integer(price_mons_new):
-                            price_mons_new = int(price_mons_new)
+                        if is_integer(price_mons_new) or price_mons_new == "":
                             for i in range(len(mons)):
                                 if mons[i][1] == msTemp[id_mons_new][1]:
                                     selectedMons = mons[i-1][1]
                                     if stok_mons_new != "" and price_mons_new != "":
+                                        stok_mons_new = int(stok_mons_new)
+                                        price_mons_new = int(price_mons_new)
                                         mShop[id_mons_new][1] = int(stok_mons_new)
                                         mShop[id_mons_new][2] = int(price_mons_new)
                                         print(
                                             f"{selectedMons} telah berhasil diubah dengan stok baru sejumlah {stok_mons_new} dan dengan harga baru {price_mons_new}!")
                                         print()
                                     elif stok_mons_new != "" and price_mons_new == "":
+                                        stok_mons_new = int(stok_mons_new)
                                         mShop[id_mons_new][1] = int(stok_mons_new)
                                         print(
                                             f"{selectedMons} telah berhasil diubah dengan stok baru sejumlah {stok_mons_new}!")
                                         print()
                                     elif stok_mons_new == "" and price_mons_new != "":
+                                        price_mons_new = int(price_mons_new)
                                         mShop[id_mons_new][2] = int(price_mons_new)
                                         print(
                                             f"{selectedMons} telah berhasil diubah dengan harga baru {price_mons_new}!")
+                                        print()
+                                    elif stok_mons_new == "" and price_mons_new == "":
+                                        print("Anda tidak mengubah apapun..")
                                         print()
                         else:
                             print("Input harus berupa integer.")
@@ -226,29 +239,34 @@ def SHOP_MANAGEMENT(currentUser, mShop, iShop, mons, item):
                 if is_integer(id_pot_new):
                     id_pot_new = int(id_pot_new)
                     stok_pot_new = input(">>> Masukkan stok baru: ")
-                    if is_integer(stok_pot_new):
-                        stok_pot_new = int(stok_pot_new)
+                    if is_integer(stok_pot_new) or stok_pot_new == "":
                         price_pot_new = input(">>> Masukkan harga baru: ")
-                        if is_integer(price_pot_new):
-                            price_pot_new = int(price_pot_new)
+                        if is_integer(price_pot_new) or price_pot_new == "":
                             for i in range(len(item)):
                                 if item[i][1] == iShop[id_pot_new][0]:
                                     selectedPot = item[i][1]
                                     if stok_pot_new != "" and price_pot_new != "":
+                                        stok_pot_new = int(stok_pot_new)
+                                        price_pot_new = int(price_pot_new)
                                         iShop[id_pot_new][1] = int(stok_pot_new)
                                         iShop[id_pot_new][2] = int(price_pot_new)
                                         print(
                                             f"{selectedPot} telah berhasil diubah dengan stok baru sejumlah {stok_pot_new} dan dengan harga baru {price_pot_new}!")
                                         print()                                  
                                     elif stok_pot_new != "" and price_pot_new == "":
+                                        stok_pot_new = int(stok_pot_new)
                                         iShop[id_pot_new][1] = int(stok_pot_new)
                                         print(
                                             f"{selectedPot} telah berhasil diubah dengan stok baru sejumlah {stok_pot_new}!")
                                         print()
                                     elif stok_pot_new == "" and price_pot_new != "":
+                                        price_pot_new = int(price_pot_new)
                                         iShop[id_pot_new][2] = int(price_pot_new)
                                         print(
                                             f"{selectedPot} telah berhasil diubah dengan harga baru {price_pot_new}!")
+                                        print()
+                                    elif stok_pot_new == "" and price_pot_new == "":
+                                        print("Anda tidak mengubah apapun..")
                                         print()
                         else:
                             print("Input harus berupa integer.")
